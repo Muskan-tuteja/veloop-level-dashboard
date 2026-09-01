@@ -1,0 +1,230 @@
+.page {
+  min-height: 100vh;
+  background: #161827;
+  color: #fff;
+  padding-bottom: 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px 0;
+}
+
+.backBtn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.confettiWrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  top: -20px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0.3;
+  }
+}
+
+.center {
+  text-align: center;
+  padding: 30px 24px 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.completeLabel {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #facc15;
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 900;
+  margin: 4px 0 6px;
+  background: linear-gradient(90deg, #facc15, #fb923c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  color: #9294b3;
+  font-size: 13px;
+  margin: 0;
+}
+
+.trophyWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 24px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.trophyCircle {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fde68a, #f59e0b 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 50px rgba(245, 158, 11, 0.45);
+  font-size: 56px;
+}
+
+.resultCard {
+  margin: 0 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  padding: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.scoreRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.scoreLabel {
+  font-size: 12px;
+  color: #9294b3;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.scoreValue {
+  font-size: 34px;
+  font-weight: 900;
+  color: #fff;
+}
+
+.bestBadge {
+  background: rgba(250, 204, 21, 0.15);
+  border: 1px solid rgba(250, 204, 21, 0.4);
+  color: #facc15;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.rewardsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.rewardBox {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 12px;
+  text-align: center;
+}
+
+.rewardValue {
+  font-size: 18px;
+  font-weight: 800;
+  color: #facc15;
+}
+
+.rewardLabel {
+  font-size: 10.5px;
+  color: #9294b3;
+  margin-top: 2px;
+}
+
+.progressSection {
+  margin-bottom: 4px;
+}
+
+.progressLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #9294b3;
+  margin-bottom: 6px;
+}
+
+.progressTrack {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b, #facc15);
+  border-radius: 20px;
+}
+
+.progressXP {
+  text-align: center;
+  font-size: 11px;
+  color: #6f7191;
+}
+
+.actions {
+  padding: 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.playAgainBtn {
+  background: linear-gradient(90deg, #f59e0b, #facc15);
+  border: none;
+  border-radius: 14px;
+  padding: 14px 0;
+  font-weight: 800;
+  color: #1a1408;
+  font-size: 14.5px;
+}
+
+.dashboardBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 13px 0;
+  font-weight: 700;
+  color: #fff;
+  font-size: 14px;
+}

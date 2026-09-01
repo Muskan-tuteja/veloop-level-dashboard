@@ -1,0 +1,153 @@
+.card {
+  margin: 0 20px 18px;
+  background: linear-gradient(160deg, rgba(139, 92, 246, 0.1), rgba(23, 25, 45, 0.9));
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 22px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(250, 204, 21, 0.25), transparent 70%);
+  pointer-events: none;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.titleGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.title {
+  font-size: 12px;
+  font-weight: 800;
+  color: #d4d5e8;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.infoBtn {
+  color: #6f7191;
+  cursor: pointer;
+  background: none;
+  border: none;
+  display: flex;
+  padding: 0;
+}
+
+.tooltip {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  width: 220px;
+  background: #23253d;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 11px;
+  color: #b3b5d1;
+  line-height: 1.4;
+  z-index: 10;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 14px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.lockIconWrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(160deg, #2d2f4d, #1f2038);
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.lockBadge {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #facc15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a1408;
+  border: 2px solid #17182d;
+}
+
+.rewardValue {
+  font-size: 22px;
+  font-weight: 900;
+  color: #fff;
+}
+
+.rewardSub {
+  font-size: 11.5px;
+  color: #b3b5d1;
+  margin-top: 2px;
+}
+
+.unlockText {
+  font-size: 11.5px;
+  color: #9294b3;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.unlockText b {
+  color: #facc15;
+}
+
+.progressTrack {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #a78bfa, #facc15);
+  border-radius: 20px;
+}
+
+.progressPercent {
+  text-align: right;
+  font-size: 10.5px;
+  color: #6f7191;
+  margin-top: 5px;
+  position: relative;
+  z-index: 1;
+}

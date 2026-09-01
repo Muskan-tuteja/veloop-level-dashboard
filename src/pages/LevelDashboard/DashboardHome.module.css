@@ -1,0 +1,343 @@
+.page {
+  min-height: 100vh;
+  background: #161827;
+  padding-bottom: 90px;
+  color: #fff;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px 8px;
+}
+
+.iconBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  position: relative;
+}
+
+.notifDot {
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 6px #f59e0b;
+}
+
+.greeting {
+  padding: 4px 20px 20px;
+}
+
+.greeting h4 {
+  font-weight: 800;
+  margin-bottom: 4px;
+  font-size: 20px;
+}
+
+.greeting p {
+  color: #9294b3;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* ===== Level Card ===== */
+.levelCard {
+  margin: 0 20px 18px;
+  background: linear-gradient(160deg, #23253d, #1b1c30);
+  border: 1px solid rgba(250, 204, 21, 0.15);
+  border-radius: 22px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.hexBadge {
+  flex-shrink: 0;
+  width: 70px;
+  height: 70px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hexBadge svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 14px rgba(250, 204, 21, 0.4));
+}
+
+.hexBadgeContent {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hexBadgeContent .lvlLabel {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #1a1408;
+  opacity: 0.7;
+}
+
+.hexBadgeContent .lvlNum {
+  font-size: 22px;
+  font-weight: 900;
+  color: #1a1408;
+  line-height: 1;
+}
+
+.levelInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.xpRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.xpValue {
+  font-size: 20px;
+  font-weight: 800;
+  color: #facc15;
+}
+
+.xpToNext {
+  font-size: 11px;
+  color: #9294b3;
+}
+
+.progressTrack {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b, #facc15);
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
+}
+
+.progressLabel {
+  font-size: 11px;
+  color: #6f7191;
+}
+
+/* ===== Today's Boost ===== */
+.section {
+  padding: 0 20px 18px;
+}
+
+.sectionTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.sectionTitle {
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.boostGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.boostCard {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.boostIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+}
+
+.boostValue {
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.boostLabel {
+  font-size: 10px;
+  color: #9294b3;
+  margin-top: 1px;
+}
+
+/* ===== Earn More Grid ===== */
+.earnHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.earnHeader h6 {
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+}
+
+.earnHeader p {
+  font-size: 11px;
+  color: #9294b3;
+  margin: 2px 0 0;
+}
+
+.arrowBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(250, 204, 21, 0.12);
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  color: #facc15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.earnGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.earnCard {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 12px 6px;
+  text-align: center;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  cursor: pointer;
+}
+
+.earnCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(250, 204, 21, 0.3);
+}
+
+.earnCardIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 6px;
+  color: #fff;
+}
+
+.earnCardLabel {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ===== Level Rewards Chest ===== */
+.chestCard {
+  margin: 0 20px;
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.12), rgba(139, 92, 246, 0.1));
+  border: 1px solid rgba(250, 204, 21, 0.25);
+  border-radius: 20px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.chestText h6 {
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 3px;
+}
+
+.chestText p {
+  font-size: 11.5px;
+  color: #b3b5d1;
+  margin: 0 0 10px;
+}
+
+.chestBtn {
+  background: linear-gradient(90deg, #f59e0b, #facc15);
+  border: none;
+  border-radius: 12px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #1a1408;
+}
+
+/* ===== Bottom Nav ===== */
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1b1c30;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0 14px;
+  z-index: 10;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: #6f7191;
+  font-size: 10px;
+  font-weight: 600;
+  background: none;
+  border: none;
+}
+
+.navItem.active {
+  color: #facc15;
+}
