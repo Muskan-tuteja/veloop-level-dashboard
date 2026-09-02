@@ -5,14 +5,14 @@
 // ============================================
 
 export const userLevelData = {
-  currentLevel: 5,
-  currentXP: 6420,
-  requiredXP: 8000, // XP needed to reach next level
-  nextLevel: 6,
+  currentLevel: 1,
+  currentXP: 0,
+  requiredXP: 1000, // apna hisaab se set karo
+  nextLevel: 2,
   nextLevelReward: {
     type: "VEs",
-    amount: 500,
-    secondary: { type: "Gems", amount: 25 },
+    amount: 50,
+    secondary: { type: "Gems", amount: 5 },
   },
 };
 
@@ -22,11 +22,11 @@ export const getXPRemaining = () =>
 
 // Level roadmap - shows past, current, and future levels
 export const levelRoadmap = [
-  { level: 1, status: "completed", reward: "50 VEs" },
-  { level: 2, status: "completed", reward: "100 VEs" },
-  { level: 3, status: "completed", reward: "10 Gems" },
-  { level: 4, status: "completed", reward: "150 VEs" },
-  { level: 5, status: "current", reward: "500 VEs + 25 Gems" },
+  { level: 1, status: "current", reward: "50 VEs" },
+  { level: 2, status: "locked", reward: "100 VEs" },
+  { level: 3, status: "locked", reward: "10 Gems" },
+  { level: 4, status: "locked", reward: "150 VEs" },
+  { level: 5, status: "locked", reward: "500 VEs + 25 Gems" },
   { level: 6, status: "locked", reward: "600 VEs" },
   { level: 7, status: "locked", reward: "20 Gems" },
 ];
@@ -64,14 +64,7 @@ export const earningFeatures = [
     icon: "users",
     comingSoon: false,
   },
-  {
-    id: "mini-games",
-    title: "Mini Games",
-    description: "Play games & win",
-    xpReward: 75,
-    icon: "gamepad",
-    comingSoon: false,
-  },
+ 
   {
     id: "streak-bonus",
     title: "Streak Bonus",
@@ -106,13 +99,7 @@ export const xpActivity = [
     xp: 50,
     time: "Today, 09:12 AM",
   },
-  {
-    id: 3,
-    type: "mini-game",
-    label: "Mini Game Win",
-    xp: 75,
-    time: "Today, 08:30 AM",
-  },
+  
   {
     id: 4,
     type: "xp-catcher",

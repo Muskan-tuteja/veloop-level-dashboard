@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Clock, Info } from "lucide-react";
 import styles from "./XPCatcherGame.module.css";
 import { gameConfig } from "../../data/levelData";
-
+import { Zap, Gem } from "lucide-react";
 let itemIdCounter = 0;
 
 function XPCatcherGame({ onBack, onComplete }) {
@@ -156,9 +156,13 @@ function XPCatcherGame({ onBack, onComplete }) {
               animate={{ top: "90%" }}
               exit={{ opacity: 0, scale: 0.5 }}
               transition={{ duration: item.duration, ease: "linear" }}
-              onClick={(e) => handleCatch(item, e)}
+             onClick={(e) => handleCatch(item, e)}
             >
-              {item.type}
+              {item.type === "VE" ? (
+                <Gem size={18} color="#78350f" />
+              ) : (
+                <Zap size={18} color="#4c1d95" fill="#4c1d95" />
+              )}
             </motion.div>
           ))}
         </AnimatePresence>
