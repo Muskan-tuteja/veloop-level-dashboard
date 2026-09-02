@@ -425,3 +425,92 @@
     max-width: 1300px;
   }
 }
+/* ===== Unique Animations ===== */
+
+/* Floating background particles */
+.page {
+  position: relative;
+}
+
+.bgParticle {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #facc15;
+  opacity: 0;
+  pointer-events: none;
+  animation: particleFloat linear infinite;
+  z-index: 0;
+}
+
+@keyframes particleFloat {
+  0% { transform: translateY(20px); opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.2; }
+  100% { transform: translateY(-500px); opacity: 0; }
+}
+
+/* Hex badge shine sweep */
+.hexBadge {
+  overflow: hidden;
+}
+
+.hexBadge::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255,255,255,0.5), transparent);
+  animation: hexShine 3s ease-in-out infinite;
+  z-index: 3;
+}
+
+@keyframes hexShine {
+  0% { left: -60%; }
+  40% { left: 130%; }
+  100% { left: 130%; }
+}
+
+/* XP progress bar shimmer */
+.progressFill {
+  position: relative;
+  overflow: hidden;
+}
+
+.progressFill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  animation: barShimmer 2.2s ease-in-out infinite;
+}
+
+@keyframes barShimmer {
+  0% { left: -60%; }
+  100% { left: 120%; }
+}
+
+/* Level card subtle glow breathing */
+.levelCard {
+  animation: cardBreathe 4s ease-in-out infinite;
+}
+
+@keyframes cardBreathe {
+  0%, 100% { box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+  50% { box-shadow: 0 20px 50px rgba(250,204,21,0.15); }
+}
+
+/* Earn card hover tilt */
+.earnCard {
+  transform-style: preserve-3d;
+}
+
+.earnCard:hover {
+  transform: translateY(-4px) rotateX(4deg);
+}

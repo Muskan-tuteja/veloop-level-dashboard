@@ -8,6 +8,7 @@ import LevelUpModal from "./components/LevelUpModal/LevelUpModal";
 import DashboardSkeleton from "./components/States/DashboardSkeleton";
 import ErrorState from "./components/States/ErrorState";
 import ComingSoon from "./components/ComingSoon/ComingSoon";
+import { Routes, Route, Navigate } from "react-router-dom";
 // Views this dashboard supports
 const VIEWS = {
   HOME: "HOME",
@@ -55,56 +56,65 @@ function App() {
     setView(VIEWS.GAME_PLAY);
   };
 
-  return (
-    <div style={{ minHeight: "100vh", background: "#161827" }}>
-      {view === VIEWS.HOME && isLoading && <DashboardSkeleton />}
+   return (
+  <Routes>
+    <Route path="/" element={<Navigate to="/Lvl-Dashboard" replace />} />
+    <Route
+      path="/Lvl-Dashboard"
+      element={
+        <div style={{ minHeight: "100vh", background: "#161827" }}>
+          {view === VIEWS.HOME && isLoading && <DashboardSkeleton />}
 
-      {view === VIEWS.HOME && !isLoading && hasError && (
-        <ErrorState onRetry={handleRetry} />
-      )}
+          {view === VIEWS.HOME && !isLoading && hasError && (
+            <ErrorState onRetry={handleRetry} />
+          )}
 
-      {view === VIEWS.HOME && !isLoading && !hasError && (
-       <DashboardHome
-  onPlayGame={goGame}
-  onEarnMore={goEarnMore}
-  onViewActivity={goActivity}
-  onSimulateLevelUp={() => setShowLevelUp(true)}
-  onRewards={() => setView(VIEWS.REWARDS)}
-  onWallet={() => setView(VIEWS.WALLET)}
-  onProfile={() => setView(VIEWS.PROFILE)}
-/>
-      )}
+          {view === VIEWS.HOME && !isLoading && !hasError && (
+            <DashboardHome
+              onPlayGame={goGame}
+              onEarnMore={goEarnMore}
+              onViewActivity={goActivity}
+              onSimulateLevelUp={() => setShowLevelUp(true)}
+              onRewards={() => setView(VIEWS.REWARDS)}
+              onWallet={() => setView(VIEWS.WALLET)}
+              onProfile={() => setView(VIEWS.PROFILE)}
+            />
+          )}
 
-      {view === VIEWS.GAME_PLAY && (
-        <XPCatcherGame onBack={goHome} onComplete={handleGameComplete} />
-      )}
+          {view === VIEWS.GAME_PLAY && (
+            <XPCatcherGame onBack={goHome} onComplete={handleGameComplete} />
+          )}
 
-      {view === VIEWS.GAME_RESULT && (
-        <GameResult
-          score={gameScore}
-          onPlayAgain={handlePlayAgain}
-          onBackToDashboard={goHome}
-        />
-      )}
+          {view === VIEWS.GAME_RESULT && (
+            <GameResult
+              score={gameScore}
+              onPlayAgain={handlePlayAgain}
+              onBackToDashboard={goHome}
+            />
+          )}
 
-      {view === VIEWS.EARN_MORE && (
-        <EarnAndLevelUp onBack={goHome} onPlayGame={goGame} />
-      )}
+          {view === VIEWS.EARN_MORE && (
+            <EarnAndLevelUp onBack={goHome} onPlayGame={goGame} />
+          )}
 
-      {view === VIEWS.ACTIVITY && <RecentActivity onBack={goHome} />}
-      {view === VIEWS.REWARDS && (
-  <ComingSoon label="Rewards" onBack={goHome} />
-)}
-{view === VIEWS.WALLET && (
-  <ComingSoon label="Wallet" onBack={goHome} />
-)}
-{view === VIEWS.PROFILE && (
-  <ComingSoon label="Profile" onBack={goHome} />
-)}
+          {view === VIEWS.ACTIVITY && <RecentActivity onBack={goHome} />}
 
-      {showLevelUp && <LevelUpModal onClose={() => setShowLevelUp(false)} />}
-    </div>
-  );
+          {view === VIEWS.REWARDS && (
+            <ComingSoon label="Rewards" onBack={goHome} />
+          )}
+          {view === VIEWS.WALLET && (
+            <ComingSoon label="Wallet" onBack={goHome} />
+          )}
+          {view === VIEWS.PROFILE && (
+            <ComingSoon label="Profile" onBack={goHome} />
+          )}
+
+          {showLevelUp && <LevelUpModal onClose={() => setShowLevelUp(false)} />}
+        </div>
+      }
+    />
+  </Routes>
+);
 }
 
 export default App;

@@ -116,3 +116,20 @@
   transform: translateX(-50%);
   white-space: nowrap;
 }
+.circleCurrent {
+  position: relative;
+}
+
+.circleCurrent::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid #facc15;
+  animation: ringPulse 1.8s ease-out infinite;
+}
+
+@keyframes ringPulse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
+}

@@ -26,6 +26,17 @@ function DashboardHome({ onPlayGame, onEarnMore, onViewActivity, onSimulateLevel
 
   return (
     <div className={styles.page}>
+      {[...Array(8)].map((_, i) => (
+  <div
+    key={i}
+    className={styles.bgParticle}
+    style={{
+      left: `${Math.random() * 100}%`,
+      animationDuration: `${8 + Math.random() * 6}s`,
+      animationDelay: `${Math.random() * 5}s`,
+    }}
+  />
+))}
       {/* Top bar */}
       <div className={styles.topbar}>
         <button className={styles.iconBtn}>
@@ -36,6 +47,7 @@ function DashboardHome({ onPlayGame, onEarnMore, onViewActivity, onSimulateLevel
           <span className={styles.notifDot}></span>
         </button>
       </div>
+      
 
       {/* Greeting */}
       <motion.div
