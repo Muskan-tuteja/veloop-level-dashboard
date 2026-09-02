@@ -341,3 +341,87 @@
 .navItem.active {
   color: #facc15;
 }
+
+/* ===== Responsive Breakpoints ===== */
+
+/* Tablet: 768px+ */
+@media (min-width: 768px) {
+  .page {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .greeting h4 {
+    font-size: 24px;
+  }
+
+  .boostGrid,
+  .earnGrid {
+    gap: 14px;
+  }
+
+  .earnCard,
+  .boostCard {
+    padding: 16px 10px;
+  }
+}
+
+/* Laptop: 1280px+ */
+@media (min-width: 1280px) {
+  .page {
+    max-width: 960px;
+    padding-bottom: 40px;
+  }
+
+  .bottomNav {
+    max-width: 960px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    border-radius: 20px 20px 0 0;
+  }
+
+  .levelCard {
+    padding: 28px;
+  }
+
+  .hexBadge {
+    width: 90px;
+    height: 90px;
+  }
+
+  .hexBadgeContent .lvlNum {
+    font-size: 28px;
+  }
+
+  .xpValue {
+    font-size: 26px;
+  }
+
+  .earnGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .boostGrid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 500px;
+  }
+}
+
+/* Desktop: 1440px+ */
+@media (min-width: 1440px) {
+  .page {
+    max-width: 1100px;
+  }
+
+  .greeting h4 {
+    font-size: 28px;
+  }
+}
+
+/* Large Screens: 1920px+ */
+@media (min-width: 1920px) {
+  .page {
+    max-width: 1300px;
+  }
+}

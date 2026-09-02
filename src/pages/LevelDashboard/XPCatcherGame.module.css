@@ -188,3 +188,16 @@
   color: #1a1408;
   font-size: 14px;
 }
+
+@media (min-width: 768px) {
+  .page {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1280px) {
+  .page {
+    max-width: 600px;
+  }
+}
