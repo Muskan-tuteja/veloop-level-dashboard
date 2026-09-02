@@ -19,7 +19,7 @@ const iconMap = {
   magnet: Magnet,
 };
 
-function DashboardHome({ onPlayGame, onEarnMore, onViewActivity, onSimulateLevelUp }) {
+function DashboardHome({ onPlayGame, onEarnMore, onViewActivity, onSimulateLevelUp, onRewards, onWallet, onProfile }) {
   const { currentLevel, currentXP, requiredXP } = userLevelData;
   const xpRemaining = getXPRemaining();
   const progressPercent = Math.min(100, Math.round((currentXP / requiredXP) * 100));
@@ -181,27 +181,27 @@ function DashboardHome({ onPlayGame, onEarnMore, onViewActivity, onSimulateLevel
 
       {/* Bottom Nav */}
       <div className={styles.bottomNav}>
-        <button className={`${styles.navItem} ${styles.active}`}>
-          <span>🏠</span>
-          Home
-        </button>
-        <button className={styles.navItem} onClick={onEarnMore}>
-          <span>💰</span>
-          Earn
-        </button>
-        <button className={styles.navItem}>
-          <span>🏆</span>
-          Rewards
-        </button>
-        <button className={styles.navItem}>
-          <span>👛</span>
-          Wallet
-        </button>
-        <button className={styles.navItem}>
-          <span>👤</span>
-          Profile
-        </button>
-      </div>
+  <button className={`${styles.navItem} ${styles.active}`}>
+    <span>🏠</span>
+    Home
+  </button>
+  <button className={styles.navItem} onClick={onEarnMore}>
+    <span>💰</span>
+    Earn
+  </button>
+  <button className={styles.navItem} onClick={onRewards}>
+    <span>🏆</span>
+    Rewards
+  </button>
+  <button className={styles.navItem} onClick={onWallet}>
+    <span>👛</span>
+    Wallet
+  </button>
+  <button className={styles.navItem} onClick={onProfile}>
+    <span>👤</span>
+    Profile
+  </button>
+</div>
     </div>
   );
 }

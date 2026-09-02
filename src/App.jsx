@@ -7,7 +7,7 @@ import RecentActivity from "./pages/LevelDashboard/RecentActivity";
 import LevelUpModal from "./components/LevelUpModal/LevelUpModal";
 import DashboardSkeleton from "./components/States/DashboardSkeleton";
 import ErrorState from "./components/States/ErrorState";
-
+import ComingSoon from "./components/ComingSoon/ComingSoon";
 // Views this dashboard supports
 const VIEWS = {
   HOME: "HOME",
@@ -15,6 +15,9 @@ const VIEWS = {
   GAME_RESULT: "GAME_RESULT",
   EARN_MORE: "EARN_MORE",
   ACTIVITY: "ACTIVITY",
+  REWARDS: "REWARDS",
+  WALLET: "WALLET",
+  PROFILE: "PROFILE",
 };
 
 function App() {
@@ -61,12 +64,15 @@ function App() {
       )}
 
       {view === VIEWS.HOME && !isLoading && !hasError && (
-        <DashboardHome
-          onPlayGame={goGame}
-          onEarnMore={goEarnMore}
-          onViewActivity={goActivity}
-          onSimulateLevelUp={() => setShowLevelUp(true)}
-        />
+       <DashboardHome
+  onPlayGame={goGame}
+  onEarnMore={goEarnMore}
+  onViewActivity={goActivity}
+  onSimulateLevelUp={() => setShowLevelUp(true)}
+  onRewards={() => setView(VIEWS.REWARDS)}
+  onWallet={() => setView(VIEWS.WALLET)}
+  onProfile={() => setView(VIEWS.PROFILE)}
+/>
       )}
 
       {view === VIEWS.GAME_PLAY && (
@@ -86,6 +92,15 @@ function App() {
       )}
 
       {view === VIEWS.ACTIVITY && <RecentActivity onBack={goHome} />}
+      {view === VIEWS.REWARDS && (
+  <ComingSoon label="Rewards" onBack={goHome} />
+)}
+{view === VIEWS.WALLET && (
+  <ComingSoon label="Wallet" onBack={goHome} />
+)}
+{view === VIEWS.PROFILE && (
+  <ComingSoon label="Profile" onBack={goHome} />
+)}
 
       {showLevelUp && <LevelUpModal onClose={() => setShowLevelUp(false)} />}
     </div>
