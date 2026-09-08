@@ -1,75 +1,397 @@
-.page {
-  min-height: 100vh;
-  background: #161827;
-  padding-bottom: 90px;
-  color: #fff;
+/* =========================================================
+   DASHBOARD HOME
+   Premium Responsive UI
+   ========================================================= */
+
+:root {
+  --bg: #090b16;
+  --card: rgba(22, 25, 44, 0.78);
+  --card-2: #171a2d;
+
+  --yellow: #facc15;
+  --gold: #f59e0b;
+
+  --purple: #a78bfa;
+  --green: #34d399;
+  --orange: #fb923c;
+  --blue: #60a5fa;
+  --red: #f87171;
+  --cyan: #38bdf8;
+
+  --white: #ffffff;
+  --muted: #8b8eaa;
+  --muted-2: #666a88;
+
+  --border: rgba(255, 255, 255, 0.07);
+
+  --radius: 22px;
 }
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.page {
+  position: relative;
+
+  min-height: 100vh;
+
+  overflow-x: hidden;
+
+  color: var(--white);
+
+  background:
+    radial-gradient(
+      circle at 0% 0%,
+      rgba(139, 92, 246, 0.14),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 100% 10%,
+      rgba(250, 204, 21, 0.08),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(56, 189, 248, 0.05),
+      transparent 30%
+    ),
+    var(--bg);
+
+  padding-bottom: 100px;
+}
+
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+.backgroundGlow,
+.backgroundGlowTwo {
+  position: fixed;
+
+  width: 260px;
+  height: 260px;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+
+  filter: blur(80px);
+
+  z-index: 0;
+}
+
+.backgroundGlow {
+  top: 25%;
+  left: -150px;
+
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.backgroundGlowTwo {
+  right: -150px;
+  bottom: 20%;
+
+  background: rgba(250, 204, 21, 0.05);
+}
+
+
+.bgParticle {
+  position: fixed;
+
+  width: 3px;
+  height: 3px;
+
+  border-radius: 50%;
+
+  background: var(--yellow);
+
+  opacity: 0.3;
+
+  pointer-events: none;
+
+  z-index: 0;
+
+  animation: floatParticle 9s linear infinite;
+}
+
+.p1 {
+  left: 12%;
+  bottom: -10px;
+  animation-delay: 1s;
+}
+
+.p2 {
+  left: 32%;
+  bottom: -20px;
+  animation-delay: 4s;
+}
+
+.p3 {
+  left: 55%;
+  bottom: -10px;
+  animation-delay: 2s;
+}
+
+.p4 {
+  left: 76%;
+  bottom: -20px;
+  animation-delay: 5s;
+}
+
+.p5 {
+  left: 90%;
+  bottom: -10px;
+  animation-delay: 7s;
+}
+
+@keyframes floatParticle {
+  from {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.35;
+  }
+
+  80% {
+    opacity: 0.12;
+  }
+
+  to {
+    transform: translateY(-650px);
+    opacity: 0;
+  }
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.content {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: 1180px;
+
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
 
 .topbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 20px 20px 8px;
+  justify-content: space-between;
+
+  padding: 20px 18px 8px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  font-size: 15px;
+  font-weight: 850;
+
+  letter-spacing: -0.3px;
+}
+
+.logoDot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: var(--yellow);
+
+  box-shadow:
+    0 0 12px rgba(250, 204, 21, 0.8);
 }
 
 .iconBtn {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+
+  width: 42px;
+  height: 42px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  position: relative;
+
+  color: white;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  backdrop-filter: blur(15px);
+
+  transition: 0.2s ease;
+}
+
+.iconBtn:hover {
+  transform: translateY(-2px);
+
+  background: rgba(250, 204, 21, 0.09);
+
+  border-color: rgba(250, 204, 21, 0.25);
+}
+
+.iconBtn:active {
+  transform: scale(0.94);
 }
 
 .notifDot {
   position: absolute;
-  top: 8px;
-  right: 9px;
-  width: 8px;
-  height: 8px;
+
+  top: 7px;
+  right: 8px;
+
+  width: 7px;
+  height: 7px;
+
   border-radius: 50%;
-  background: #f59e0b;
-  box-shadow: 0 0 6px #f59e0b;
+
+  background: var(--gold);
+
+  box-shadow:
+    0 0 10px rgba(245, 158, 11, 0.8);
 }
+
+
+/* =========================================================
+   GREETING
+   ========================================================= */
 
 .greeting {
-  padding: 4px 20px 20px;
+  padding: 18px 18px 24px;
 }
 
-.greeting h4 {
+.eyebrow {
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  font-size: 9px;
   font-weight: 800;
-  margin-bottom: 4px;
-  font-size: 20px;
+
+  color: var(--yellow);
+
+  letter-spacing: 1.5px;
+}
+
+.greeting h1 {
+  margin: 0;
+
+  font-size: clamp(24px, 6vw, 34px);
+
+  line-height: 1.15;
+
+  font-weight: 900;
+
+  letter-spacing: -0.8px;
+}
+
+.greeting h1 span {
+  color: var(--yellow);
+
+  text-shadow:
+    0 0 25px rgba(250, 204, 21, 0.18);
 }
 
 .greeting p {
-  color: #9294b3;
-  font-size: 13px;
-  margin: 0;
+  max-width: 600px;
+
+  margin: 8px 0 0;
+
+  color: var(--muted);
+
+  font-size: 12.5px;
+
+  line-height: 1.5;
 }
 
-/* ===== Level Card ===== */
+
+/* =========================================================
+   LEVEL CARD
+   ========================================================= */
+
 .levelCard {
-  margin: 0 20px 18px;
-  background: linear-gradient(160deg, #23253d, #1b1c30);
-  border: 1px solid rgba(250, 204, 21, 0.15);
-  border-radius: 22px;
-  padding: 20px;
+  position: relative;
+
   display: flex;
   align-items: center;
-  gap: 16px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+
+  gap: 17px;
+
+  margin: 0 18px 20px;
+
+  padding: 19px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(250, 204, 21, 0.18);
+
+  border-radius: var(--radius);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(35, 38, 64, 0.9),
+      rgba(19, 21, 38, 0.88)
+    );
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
+.levelCardGlow {
+  position: absolute;
+
+  width: 180px;
+  height: 180px;
+
+  right: -90px;
+  top: -100px;
+
+  border-radius: 50%;
+
+  background: rgba(250, 204, 21, 0.08);
+
+  filter: blur(20px);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   HEX
+   ========================================================= */
+
 .hexBadge {
-  flex-shrink: 0;
-  width: 70px;
-  height: 70px;
   position: relative;
+
+  flex-shrink: 0;
+
+  width: 72px;
+  height: 72px;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -77,440 +399,1165 @@
 
 .hexBadge svg {
   position: absolute;
+
   inset: 0;
+
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 0 14px rgba(250, 204, 21, 0.4));
+
+  filter:
+    drop-shadow(0 0 9px rgba(250, 204, 21, 0.4));
 }
 
 .hexBadgeContent {
   position: relative;
+
   z-index: 2;
-  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  color: #191407;
 }
 
-.hexBadgeContent .lvlLabel {
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: #1a1408;
-  opacity: 0.7;
-}
+.hexBadgeContent span {
+  font-size: 7px;
 
-.hexBadgeContent .lvlNum {
-  font-size: 22px;
   font-weight: 900;
-  color: #1a1408;
-  line-height: 1;
+
+  letter-spacing: 1px;
 }
+
+.hexBadgeContent strong {
+  margin-top: 2px;
+
+  font-size: 23px;
+
+  line-height: 1;
+
+  font-weight: 950;
+}
+
+
+/* =========================================================
+   XP
+   ========================================================= */
 
 .levelInfo {
   flex: 1;
+
   min-width: 0;
 }
 
-.xpRow {
+.xpHeader {
   display: flex;
+
   justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 8px;
+  align-items: flex-end;
+
+  gap: 12px;
+
+  margin-bottom: 9px;
+}
+
+.smallLabel {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: var(--muted-2);
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
 }
 
 .xpValue {
-  font-size: 20px;
-  font-weight: 800;
-  color: #facc15;
+  color: var(--yellow);
+
+  font-size: 21px;
+
+  font-weight: 900;
+
+  line-height: 1;
 }
 
-.xpToNext {
+.xpValue small {
   font-size: 11px;
-  color: #9294b3;
-}
 
-.progressTrack {
-  height: 10px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  overflow: hidden;
-  margin-bottom: 6px;
-}
-
-.progressFill {
-  height: 100%;
-  background: linear-gradient(90deg, #f59e0b, #facc15);
-  border-radius: 20px;
-  box-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
-}
-
-.progressLabel {
-  font-size: 11px;
-  color: #6f7191;
-}
-
-/* ===== Today's Boost ===== */
-.section {
-  padding: 0 20px 18px;
-}
-
-.sectionTitleRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.sectionTitle {
-  font-size: 13px;
   font-weight: 800;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
-.boostGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.boostCard {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 12px 8px;
-  text-align: center;
-}
-
-.boostIcon {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 8px;
-}
-
-.boostValue {
-  font-size: 14px;
-  font-weight: 800;
-  color: #fff;
-}
-
-.boostLabel {
-  font-size: 10px;
-  color: #9294b3;
-  margin-top: 1px;
-}
-
-/* ===== Earn More Grid ===== */
-.earnHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 4px;
-}
-
-.earnHeader h6 {
-  font-size: 14px;
-  font-weight: 800;
-  color: #fff;
-  margin: 0;
-}
-
-.earnHeader p {
-  font-size: 11px;
-  color: #9294b3;
-  margin: 2px 0 0;
-}
-
-.arrowBtn {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: rgba(250, 204, 21, 0.12);
-  border: 1px solid rgba(250, 204, 21, 0.3);
-  color: #facc15;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.earnGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.earnCard {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 12px 6px;
-  text-align: center;
-  transition: transform 0.15s ease, border-color 0.15s ease;
-  cursor: pointer;
-}
-
-.earnCard:hover {
-  transform: translateY(-3px);
-  border-color: rgba(250, 204, 21, 0.3);
-}
-
-.earnCardIcon {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 6px;
-  color: #fff;
-}
-
-.earnCardLabel {
-  font-size: 10.5px;
-  font-weight: 700;
-  color: #fff;
-}
-
-/* ===== Level Rewards Chest ===== */
-.chestCard {
-  margin: 0 20px;
-  background: linear-gradient(135deg, rgba(250, 204, 21, 0.12), rgba(139, 92, 246, 0.1));
-  border: 1px solid rgba(250, 204, 21, 0.25);
-  border-radius: 20px;
-  padding: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.chestText h6 {
-  font-size: 14px;
-  font-weight: 800;
-  color: #fff;
-  margin: 0 0 3px;
-}
-
-.chestText p {
-  font-size: 11.5px;
-  color: #b3b5d1;
-  margin: 0 0 10px;
-}
-
-.chestBtn {
-  background: linear-gradient(90deg, #f59e0b, #facc15);
-  border: none;
-  border-radius: 12px;
-  padding: 8px 16px;
-  font-size: 12px;
-  font-weight: 800;
-  color: #1a1408;
-}
-
-/* ===== Bottom Nav ===== */
-.bottomNav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #1b1c30;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  display: flex;
-  justify-content: space-around;
-  padding: 10px 0 14px;
-  z-index: 10;
-}
-
-.navItem {
+.nextLevel {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  color: #6f7191;
-  font-size: 10px;
-  font-weight: 600;
-  background: none;
-  border: none;
+
+  align-items: flex-end;
+
+  gap: 2px;
 }
 
-.navItem.active {
-  color: #facc15;
+.nextLevel span {
+  color: var(--muted-2);
+
+  font-size: 9px;
 }
 
-/* ===== Responsive Breakpoints ===== */
+.nextLevel strong {
+  color: white;
 
-/* Tablet: 768px+ */
-@media (min-width: 768px) {
-  .page {
-    max-width: 700px;
-    margin: 0 auto;
-  }
+  font-size: 13px;
 
-  .greeting h4 {
-    font-size: 24px;
-  }
-
-  .boostGrid,
-  .earnGrid {
-    gap: 14px;
-  }
-
-  .earnCard,
-  .boostCard {
-    padding: 16px 10px;
-  }
+  font-weight: 850;
 }
 
-/* Laptop: 1280px+ */
-@media (min-width: 1280px) {
-  .page {
-    max-width: 960px;
-    padding-bottom: 40px;
-  }
 
-  .bottomNav {
-    max-width: 960px;
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    border-radius: 20px 20px 0 0;
-  }
+/* =========================================================
+   PROGRESS
+   ========================================================= */
 
-  .levelCard {
-    padding: 28px;
-  }
-
-  .hexBadge {
-    width: 90px;
-    height: 90px;
-  }
-
-  .hexBadgeContent .lvlNum {
-    font-size: 28px;
-  }
-
-  .xpValue {
-    font-size: 26px;
-  }
-
-  .earnGrid {
-    grid-template-columns: repeat(6, 1fr);
-  }
-
-  .boostGrid {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 500px;
-  }
-}
-
-/* Desktop: 1440px+ */
-@media (min-width: 1440px) {
-  .page {
-    max-width: 1100px;
-  }
-
-  .greeting h4 {
-    font-size: 28px;
-  }
-}
-
-/* Large Screens: 1920px+ */
-@media (min-width: 1920px) {
-  .page {
-    max-width: 1300px;
-  }
-}
-/* ===== Unique Animations ===== */
-
-/* Floating background particles */
-.page {
+.progressTrack {
   position: relative;
-}
 
-.bgParticle {
-  position: fixed;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: #facc15;
-  opacity: 0;
-  pointer-events: none;
-  animation: particleFloat linear infinite;
-  z-index: 0;
-}
+  height: 9px;
 
-@keyframes particleFloat {
-  0% { transform: translateY(20px); opacity: 0; }
-  10% { opacity: 0.5; }
-  90% { opacity: 0.2; }
-  100% { transform: translateY(-500px); opacity: 0; }
-}
-
-/* Hex badge shine sweep */
-.hexBadge {
   overflow: hidden;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.07);
+
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.hexBadge::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -60%;
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(115deg, transparent, rgba(255,255,255,0.5), transparent);
-  animation: hexShine 3s ease-in-out infinite;
-  z-index: 3;
-}
-
-@keyframes hexShine {
-  0% { left: -60%; }
-  40% { left: 130%; }
-  100% { left: 130%; }
-}
-
-/* XP progress bar shimmer */
 .progressFill {
   position: relative;
+
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #f59e0b,
+      #facc15,
+      #fde047
+    );
+
+  box-shadow:
+    0 0 12px rgba(250, 204, 21, 0.55);
+
   overflow: hidden;
 }
 
 .progressFill::after {
   content: "";
+
   position: absolute;
+
   top: 0;
-  left: -100%;
-  width: 60%;
+  left: -70%;
+
+  width: 50%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-  animation: barShimmer 2.2s ease-in-out infinite;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.65),
+      transparent
+    );
+
+  animation: shimmer 2.4s infinite;
 }
 
-@keyframes barShimmer {
-  0% { left: -60%; }
-  100% { left: 120%; }
+@keyframes shimmer {
+  from {
+    left: -70%;
+  }
+
+  to {
+    left: 130%;
+  }
 }
 
-/* Level card subtle glow breathing */
-.levelCard {
-  animation: cardBreathe 4s ease-in-out infinite;
+.progressBottom {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-top: 6px;
+
+  color: var(--muted-2);
+
+  font-size: 9px;
 }
 
-@keyframes cardBreathe {
-  0%, 100% { box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-  50% { box-shadow: 0 20px 50px rgba(250,204,21,0.15); }
+.progressBottom strong {
+  color: var(--yellow);
 }
 
-/* Earn card hover tilt */
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.section {
+  padding: 0 18px 24px;
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 13px;
+}
+
+.headingIcon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  color: var(--yellow);
+
+  border-radius: 11px;
+
+  background: rgba(250, 204, 21, 0.09);
+
+  border: 1px solid rgba(250, 204, 21, 0.12);
+}
+
+.headingPurple {
+  color: var(--purple);
+
+  background: rgba(167, 139, 250, 0.1);
+
+  border-color: rgba(167, 139, 250, 0.14);
+}
+
+.sectionHeading h2 {
+  margin: 0;
+
+  font-size: 15px;
+
+  font-weight: 850;
+}
+
+.sectionHeading p {
+  margin: 2px 0 0;
+
+  color: var(--muted);
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   BOOST
+   ========================================================= */
+
+.boostGrid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 9px;
+}
+
+.boostCard {
+  min-width: 0;
+
+  padding: 14px 7px;
+
+  text-align: center;
+
+  border-radius: 17px;
+
+  border: 1px solid var(--border);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.02)
+    );
+
+  transition: 0.25s ease;
+}
+
+.boostCard:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(250, 204, 21, 0.2);
+}
+
+.boostIcon {
+  width: 35px;
+  height: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 8px;
+
+  border-radius: 11px;
+}
+
+.boostCard strong {
+  display: block;
+
+  font-size: 14px;
+
+  font-weight: 850;
+}
+
+.boostCard > span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--muted);
+
+  font-size: 9px;
+}
+
+
+/* Colors */
+
+.yellow {
+  color: var(--yellow);
+  background: rgba(250, 204, 21, 0.13);
+}
+
+.purple {
+  color: var(--purple);
+  background: rgba(139, 92, 246, 0.13);
+}
+
+.green {
+  color: var(--green);
+  background: rgba(52, 211, 153, 0.13);
+}
+
+.orange {
+  color: var(--orange);
+  background: rgba(251, 146, 60, 0.13);
+}
+
+.blue {
+  color: var(--blue);
+  background: rgba(96, 165, 250, 0.13);
+}
+
+.red {
+  color: var(--red);
+  background: rgba(248, 113, 113, 0.13);
+}
+
+.cyan {
+  color: var(--cyan);
+  background: rgba(56, 189, 248, 0.13);
+}
+
+
+/* =========================================================
+   ROADMAP
+   ========================================================= */
+
+.roadmapSection {
+  position: relative;
+
+  margin-bottom: 8px;
+}
+
+
+/* =========================================================
+   EARN HEADER
+   ========================================================= */
+
+.earnHeader {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+.earnHeader .sectionHeading {
+  margin-bottom: 0;
+}
+
+.arrowBtn {
+  width: 37px;
+  height: 37px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--yellow);
+
+  border: 1px solid rgba(250, 204, 21, 0.2);
+
+  background: rgba(250, 204, 21, 0.08);
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.arrowBtn:hover {
+  transform: translateX(3px);
+
+  background: rgba(250, 204, 21, 0.14);
+
+  box-shadow:
+    0 0 20px rgba(250, 204, 21, 0.12);
+}
+
+
+/* =========================================================
+   EARN GRID
+   ========================================================= */
+
+.earnGrid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+
+  margin-top: 14px;
+}
+
 .earnCard {
-  transform-style: preserve-3d;
+  position: relative;
+
+  min-height: 76px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 12px;
+
+  color: white;
+
+  text-align: left;
+
+  border: 1px solid var(--border);
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
+    );
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease;
 }
 
 .earnCard:hover {
-  transform: translateY(-4px) rotateX(4deg);
+  transform: translateY(-4px);
+
+  border-color: rgba(250, 204, 21, 0.22);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(250, 204, 21, 0.07),
+      rgba(255, 255, 255, 0.025)
+    );
+}
+
+.earnCard:active {
+  transform: scale(0.97);
+}
+
+.earnCardIcon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 12px;
+}
+
+.earnCard > span {
+  flex: 1;
+
+  font-size: 10.5px;
+
+  line-height: 1.25;
+
+  font-weight: 750;
+}
+
+.cardArrow {
+  flex-shrink: 0;
+
+  color: var(--muted-2);
+
+  transition: 0.2s ease;
+}
+
+.earnCard:hover .cardArrow {
+  color: var(--yellow);
+
+  transform: translateX(2px);
+}
+
+
+/* =========================================================
+   REWARD CHEST
+   ========================================================= */
+
+.chestCard {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin: 0 18px;
+
+  padding: 19px;
+
+  overflow: hidden;
+
+  border-radius: 21px;
+
+  border: 1px solid rgba(250, 204, 21, 0.18);
+
+  background:
+    radial-gradient(
+      circle at 85% 25%,
+      rgba(139, 92, 246, 0.15),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(250, 204, 21, 0.09),
+      rgba(139, 92, 246, 0.07)
+    );
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.chestContent {
+  position: relative;
+
+  z-index: 2;
+}
+
+.rewardTag {
+  display: inline-block;
+
+  margin-bottom: 5px;
+
+  color: var(--yellow);
+
+  font-size: 8px;
+
+  font-weight: 850;
+
+  letter-spacing: 1.3px;
+}
+
+.chestContent h2 {
+  margin: 0;
+
+  font-size: 15px;
+
+  font-weight: 850;
+}
+
+.chestContent p {
+  margin: 5px 0 11px;
+
+  color: var(--muted);
+
+  font-size: 10.5px;
+
+  line-height: 1.4;
+}
+
+.chestContent p strong {
+  color: var(--yellow);
+}
+
+.chestBtn {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 9px 14px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  color: #191407;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--gold),
+      var(--yellow)
+    );
+
+  font-size: 10.5px;
+
+  font-weight: 850;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 20px rgba(245, 158, 11, 0.2);
+
+  transition: 0.2s ease;
+}
+
+.chestBtn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 25px rgba(245, 158, 11, 0.3);
+}
+
+.giftBox {
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 72px;
+  height: 72px;
+
+  flex-shrink: 0;
+
+  font-size: 42px;
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.045);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+
+/* =========================================================
+   BOTTOM NAV
+   ========================================================= */
+
+.bottomNav {
+  position: fixed;
+
+  z-index: 50;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  padding:
+    9px 7px
+    calc(10px + env(safe-area-inset-bottom));
+
+  background:
+    rgba(13, 15, 30, 0.9);
+
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  box-shadow:
+    0 -15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.navItem {
+  position: relative;
+
+  min-width: 55px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 4px;
+
+  padding: 5px 8px;
+
+  color: var(--muted-2);
+
+  background: none;
+
+  border: 0;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.navItem:hover {
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+.navItem.active {
+  color: var(--yellow);
+}
+
+.navItem.active::before {
+  content: "";
+
+  position: absolute;
+
+  top: -9px;
+
+  width: 25px;
+  height: 3px;
+
+  border-radius: 99px;
+
+  background: var(--yellow);
+
+  box-shadow:
+    0 0 12px rgba(250, 204, 21, 0.65);
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (min-width: 600px) {
+
+  .topbar {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .greeting {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .section {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .levelCard,
+  .chestCard {
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+
+  .levelCard {
+    padding: 24px;
+
+    gap: 22px;
+  }
+
+  .hexBadge {
+    width: 85px;
+    height: 85px;
+  }
+
+  .hexBadgeContent strong {
+    font-size: 28px;
+  }
+
+  .xpValue {
+    font-size: 25px;
+  }
+
+  .boostGrid {
+    gap: 14px;
+  }
+
+  .boostCard {
+    padding: 18px;
+  }
+
+  .earnGrid {
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 13px;
+  }
+
+  .earnCard {
+    min-height: 100px;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+  }
+
+  .cardArrow {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media (min-width: 900px) {
+
+  .page {
+    padding-bottom: 35px;
+  }
+
+  .topbar {
+    padding: 28px 42px 10px;
+  }
+
+  .greeting {
+    padding: 20px 42px 30px;
+  }
+
+  .greeting h1 {
+    font-size: 34px;
+  }
+
+  .greeting p {
+    font-size: 14px;
+  }
+
+  .levelCard {
+    margin-left: 42px;
+    margin-right: 42px;
+
+    padding: 28px;
+
+    border-radius: 25px;
+  }
+
+  .hexBadge {
+    width: 95px;
+    height: 95px;
+  }
+
+  .hexBadgeContent strong {
+    font-size: 31px;
+  }
+
+  .xpValue {
+    font-size: 29px;
+  }
+
+  .section {
+    padding-left: 42px;
+    padding-right: 42px;
+
+    padding-bottom: 30px;
+  }
+
+  .boostGrid {
+    gap: 16px;
+  }
+
+  .boostCard {
+    padding: 20px;
+
+    min-height: 120px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .earnGrid {
+    grid-template-columns: repeat(6, 1fr);
+
+    gap: 12px;
+  }
+
+  .earnCard {
+    min-height: 125px;
+
+    padding: 16px 8px;
+  }
+
+  .earnCard > span {
+    font-size: 11px;
+  }
+
+  .chestCard {
+    margin-left: 42px;
+    margin-right: 42px;
+
+    padding: 24px;
+  }
+
+  .giftBox {
+    width: 90px;
+    height: 90px;
+
+    font-size: 50px;
+  }
+
+  .bottomNav {
+    left: 50%;
+    right: auto;
+
+    bottom: 14px;
+
+    width: min(650px, calc(100% - 40px));
+
+    transform: translateX(-50%);
+
+    padding: 9px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 21px;
+
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.45);
+  }
+
+  .navItem {
+    min-width: 90px;
+
+    padding: 8px 15px;
+
+    font-size: 10px;
+  }
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1200px) {
+
+  .content {
+    max-width: 1220px;
+  }
+
+  .topbar {
+    padding-left: 55px;
+    padding-right: 55px;
+  }
+
+  .greeting {
+    padding-left: 55px;
+    padding-right: 55px;
+  }
+
+  .section {
+    padding-left: 55px;
+    padding-right: 55px;
+  }
+
+  .levelCard,
+  .chestCard {
+    margin-left: 55px;
+    margin-right: 55px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+  .topbar {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .greeting {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .section {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .levelCard,
+  .chestCard {
+    margin-left: 14px;
+    margin-right: 14px;
+  }
+
+  .levelCard {
+    gap: 12px;
+
+    padding: 15px;
+  }
+
+  .hexBadge {
+    width: 61px;
+    height: 61px;
+  }
+
+  .hexBadgeContent strong {
+    font-size: 20px;
+  }
+
+  .xpValue {
+    font-size: 18px;
+  }
+
+  .nextLevel strong {
+    font-size: 11px;
+  }
+
+  .boostGrid {
+    gap: 6px;
+  }
+
+  .boostCard {
+    padding: 12px 4px;
+  }
+
+  .boostCard strong {
+    font-size: 12px;
+  }
+
+  .boostCard > span {
+    font-size: 8px;
+  }
+
+  .earnGrid {
+    gap: 7px;
+  }
+
+  .earnCard {
+    padding: 10px 8px;
+  }
+
+  .earnCardIcon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .earnCard > span {
+    font-size: 9.5px;
+  }
+
+  .chestCard {
+    padding: 15px;
+  }
+
+  .giftBox {
+    width: 55px;
+    height: 55px;
+
+    font-size: 34px;
+  }
+
+  .chestContent h2 {
+    font-size: 13px;
+  }
+
+  .chestContent p {
+    font-size: 9px;
+  }
+
+  .chestBtn {
+    padding: 8px 11px;
+  }
+
+  .navItem {
+    min-width: 48px;
+
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+button:focus-visible {
+  outline: 2px solid var(--yellow);
+
+  outline-offset: 3px;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+
+    animation-iteration-count: 1 !important;
+
+    transition-duration: 0.01ms !important;
+  }
 }
