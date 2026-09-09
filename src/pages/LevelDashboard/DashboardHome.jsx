@@ -61,31 +61,38 @@ function DashboardHome({
 
   const xpRemaining = getXPRemaining();
 
-  const progressPercent = Math.min(
-    100,
-    Math.round((currentXP / requiredXP) * 100)
-  );
+  const progressPercent =
+    requiredXP > 0
+      ? Math.min(100, Math.round((currentXP / requiredXP) * 100))
+      : 0;
+
+  const nextLevel = currentLevel + 1;
+
+  const handleEarnClick = (feature) => {
+    if (
+      feature.id === "mini-games" ||
+      feature.id === "xp-catcher"
+    ) {
+      onPlayGame?.();
+    } else {
+      onEarnMore?.();
+    }
+  };
 
   return (
-    <div className={styles.page}>
-
+    <main className={styles.page}>
       {/* Background */}
       <div className={styles.backgroundGlow} />
       <div className={styles.backgroundGlowTwo} />
 
-      {/* Floating particles */}
       <div className={`${styles.bgParticle} ${styles.p1}`} />
       <div className={`${styles.bgParticle} ${styles.p2}`} />
       <div className={`${styles.bgParticle} ${styles.p3}`} />
       <div className={`${styles.bgParticle} ${styles.p4}`} />
-      <div className={`${styles.bgParticle} ${styles.p5}`} />
 
       <div className={styles.content}>
-
-        {/* ================= TOP BAR ================= */}
-
+        {/* ================= HEADER ================= */}
         <header className={styles.topbar}>
-
           <button
             className={styles.iconBtn}
             aria-label="Open menu"
@@ -95,27 +102,23 @@ function DashboardHome({
 
           <div className={styles.logo}>
             <span className={styles.logoDot} />
-            VeLooper
+            <span>VeLooper</span>
           </div>
 
           <button
             className={styles.iconBtn}
             onClick={onViewActivity}
-            aria-label="Notifications"
+            aria-label="View activity"
           >
             <Bell size={19} />
-
             <span className={styles.notifDot} />
           </button>
-
         </header>
 
-
-        {/* ================= GREETING ================= */}
-
+        {/* ================= HERO ================= */}
         <motion.section
           className={styles.greeting}
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45 }}
         >
@@ -129,71 +132,53 @@ function DashboardHome({
           </h1>
 
           <p>
-            Level up your journey and unlock epic rewards every day.
+            Level up your journey, complete activities and
+            unlock amazing rewards.
           </p>
         </motion.section>
 
-
         {/* ================= LEVEL CARD ================= */}
-
         <motion.section
           className={styles.levelCard}
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            delay: 0.1,
-            duration: 0.45,
-          }}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.08, duration: 0.45 }}
         >
-
           <div className={styles.levelCardGlow} />
 
-          {/* Badge */}
+          {/* Level Badge */}
           <div className={styles.hexBadge}>
-
-            <svg viewBox="0 0 100 100">
+            <svg viewBox="0 0 100 100" aria-hidden="true">
               <defs>
                 <linearGradient
-                  id="hexGrad"
+                  id="levelGradient"
                   x1="0"
                   y1="0"
                   x2="1"
                   y2="1"
                 >
-                  <stop
-                    offset="0%"
-                    stopColor="#fde047"
-                  />
-
-                  <stop
-                    offset="100%"
-                    stopColor="#f59e0b"
-                  />
+                  <stop offset="0%" stopColor="#fde047" />
+                  <stop offset="100%" stopColor="#f59e0b" />
                 </linearGradient>
               </defs>
 
               <polygon
                 points="50,3 93,26 93,74 50,97 7,74 7,26"
-                fill="url(#hexGrad)"
+                fill="url(#levelGradient)"
               />
             </svg>
 
             <div className={styles.hexBadgeContent}>
               <span>LEVEL</span>
-
               <strong>
                 {String(currentLevel).padStart(2, "0")}
               </strong>
             </div>
-
           </div>
 
-
-          {/* XP */}
+          {/* XP Details */}
           <div className={styles.levelInfo}>
-
             <div className={styles.xpHeader}>
-
               <div>
                 <span className={styles.smallLabel}>
                   CURRENT XP
@@ -206,17 +191,17 @@ function DashboardHome({
               </div>
 
               <div className={styles.nextLevel}>
-                <span>Next Level</span>
+                <span>NEXT LEVEL</span>
                 <strong>
-                  {String(currentLevel + 1).padStart(2, "0")}
+                  {String(nextLevel).padStart(2, "0")}
                 </strong>
               </div>
-
             </div>
 
-
-            <div className={styles.progressTrack}>
-
+            <div
+              className={styles.progressTrack}
+              aria-label={`${progressPercent}% XP progress`}
+            >
               <motion.div
                 className={styles.progressFill}
                 initial={{ width: 0 }}
@@ -229,138 +214,95 @@ function DashboardHome({
                   ease: "easeOut",
                 }}
               />
-
             </div>
 
-
             <div className={styles.progressBottom}>
-
               <span>
-                {currentXP.toLocaleString()} /
-                {" "}
+                {currentXP.toLocaleString()} /{" "}
                 {requiredXP.toLocaleString()} XP
               </span>
 
-              <strong>
-                {progressPercent}%
-              </strong>
-
+              <strong>{progressPercent}%</strong>
             </div>
-
           </div>
-
         </motion.section>
 
-
         {/* ================= NEXT REWARD ================= */}
+        <section className={styles.rewardSection}>
+          <NextLevelReward />
+        </section>
 
-        <NextLevelReward />
-
-
-        {/* ================= TODAY BOOST ================= */}
-
+        {/* ================= TODAY'S BOOST ================= */}
         <section className={styles.section}>
-
           <div className={styles.sectionHeading}>
-
             <div className={styles.headingIcon}>
-              <Zap size={16} />
+              <Zap size={17} />
             </div>
 
             <div>
               <h2>Today's Boost</h2>
               <p>Your progress today</p>
             </div>
-
           </div>
 
-
           <div className={styles.boostGrid}>
-
             <div className={styles.boostCard}>
-
-              <div className={`${styles.boostIcon} ${styles.yellow}`}>
+              <div
+                className={`${styles.boostIcon} ${styles.yellow}`}
+              >
                 <Zap size={18} />
               </div>
 
-              <strong>
-                {todaysBoost.xpEarned} XP
-              </strong>
-
-              <span>
-                XP Earned
-              </span>
-
+              <strong>{todaysBoost.xpEarned} XP</strong>
+              <span>XP Earned</span>
             </div>
 
-
             <div className={styles.boostCard}>
-
-              <div className={`${styles.boostIcon} ${styles.purple}`}>
+              <div
+                className={`${styles.boostIcon} ${styles.purple}`}
+              >
                 <ListChecks size={18} />
               </div>
 
-              <strong>
-                {todaysBoost.tasksDone}
-              </strong>
-
-              <span>
-                Tasks Done
-              </span>
-
+              <strong>{todaysBoost.tasksDone}</strong>
+              <span>Tasks Done</span>
             </div>
 
-
             <div className={styles.boostCard}>
-
-              <div className={`${styles.boostIcon} ${styles.orange}`}>
+              <div
+                className={`${styles.boostIcon} ${styles.orange}`}
+              >
                 <Flame size={18} />
               </div>
 
               <strong>
                 {todaysBoost.streakDays} Days
               </strong>
-
-              <span>
-                Streak
-              </span>
-
+              <span>Streak</span>
             </div>
-
           </div>
-
         </section>
 
-
         {/* ================= ROADMAP ================= */}
-
         <section className={styles.roadmapSection}>
           <LevelRoadmap />
         </section>
 
-
         {/* ================= EARN MORE ================= */}
-
         <section className={styles.section}>
-
           <div className={styles.earnHeader}>
-
             <div className={styles.sectionHeading}>
-
-              <div className={`${styles.headingIcon} ${styles.headingPurple}`}>
-                <Gift size={16} />
+              <div
+                className={`${styles.headingIcon} ${styles.headingPurple}`}
+              >
+                <Gift size={17} />
               </div>
 
               <div>
                 <h2>Earn More</h2>
-
-                <p>
-                  Complete activities & earn rewards
-                </p>
+                <p>Complete activities & earn rewards</p>
               </div>
-
             </div>
-
 
             <button
               className={styles.arrowBtn}
@@ -369,107 +311,86 @@ function DashboardHome({
             >
               <ChevronRight size={19} />
             </button>
-
           </div>
 
-
           <div className={styles.earnGrid}>
-
-            {earningFeatures.map((feature, i) => {
-
+            {earningFeatures.map((feature, index) => {
               const Icon =
                 iconMap[feature.icon] || Play;
 
               const color =
-                featureColors[i % featureColors.length];
-
-              const onClick =
-                feature.id === "mini-games" ||
-                feature.id === "xp-catcher"
-                  ? onPlayGame
-                  : onEarnMore;
+                featureColors[index % featureColors.length];
 
               return (
                 <motion.button
                   type="button"
                   key={feature.id}
                   className={styles.earnCard}
-                  onClick={onClick}
+                  onClick={() => handleEarnClick(feature)}
                   initial={{
                     opacity: 0,
-                    y: 15,
+                    y: 12,
                   }}
                   animate={{
                     opacity: 1,
                     y: 0,
                   }}
                   transition={{
-                    delay: 0.15 + i * 0.05,
+                    delay: 0.15 + index * 0.05,
                     duration: 0.3,
                   }}
                 >
-
                   <div
                     className={`${styles.earnCardIcon} ${styles[color]}`}
                   >
                     <Icon size={18} />
                   </div>
 
-                  <span>
-                    {feature.title}
-                  </span>
+                  <span>{feature.title}</span>
 
-                  <ChevronRight
-                    className={styles.cardArrow}
-                    size={14}
-                  />
+                  {!feature.comingSoon && (
+                    <ChevronRight
+                      size={14}
+                      className={styles.cardArrow}
+                    />
+                  )}
 
+                  {feature.comingSoon && (
+                    <span className={styles.soonBadge}>
+                      SOON
+                    </span>
+                  )}
                 </motion.button>
               );
             })}
-
           </div>
-
         </section>
 
-
-        {/* ================= REWARD CARD ================= */}
-
+        {/* ================= LEVEL REWARD ================= */}
         <motion.section
           className={styles.chestCard}
-          initial={{
-            opacity: 0,
-            y: 15,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{
-            delay: 0.4,
+            delay: 0.35,
             duration: 0.4,
           }}
         >
-
           <div className={styles.chestContent}>
-
             <span className={styles.rewardTag}>
               LEVEL REWARD
             </span>
 
             <h2>
               Level{" "}
-              {String(currentLevel).padStart(2, "0")}
-              {" "}Rewards
+              {String(currentLevel).padStart(2, "0")} Rewards
             </h2>
 
             <p>
-              Amazing rewards await you!
-              {" "}
               <strong>
                 {xpRemaining.toLocaleString()} XP
-              </strong>
-              {" "}to go.
+              </strong>{" "}
+              remaining to unlock your next reward.
             </p>
 
             <button
@@ -479,30 +400,25 @@ function DashboardHome({
               <Trophy size={15} />
               View Rewards
             </button>
-
           </div>
-
 
           <div className={styles.giftBox}>
-            🎁
+            <Gift size={42} />
           </div>
-
         </motion.section>
-
       </div>
 
-
       {/* ================= BOTTOM NAV ================= */}
-
-      <nav className={styles.bottomNav}>
-
+      <nav
+        className={styles.bottomNav}
+        aria-label="Main navigation"
+      >
         <button
           className={`${styles.navItem} ${styles.active}`}
         >
           <Home size={19} />
           <span>Home</span>
         </button>
-
 
         <button
           className={styles.navItem}
@@ -512,7 +428,6 @@ function DashboardHome({
           <span>Earn</span>
         </button>
 
-
         <button
           className={styles.navItem}
           onClick={onRewards}
@@ -520,7 +435,6 @@ function DashboardHome({
           <Trophy size={19} />
           <span>Rewards</span>
         </button>
-
 
         <button
           className={styles.navItem}
@@ -530,7 +444,6 @@ function DashboardHome({
           <span>Wallet</span>
         </button>
 
-
         <button
           className={styles.navItem}
           onClick={onProfile}
@@ -538,10 +451,8 @@ function DashboardHome({
           <User size={19} />
           <span>Profile</span>
         </button>
-
       </nav>
-
-    </div>
+    </main>
   );
 }
 

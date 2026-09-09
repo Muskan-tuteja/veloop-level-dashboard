@@ -1,12 +1,8 @@
-/* =========================================================
-   DASHBOARD HOME
-   Premium Responsive UI
-   ========================================================= */
-
 :root {
-  --bg: #090b16;
-  --card: rgba(22, 25, 44, 0.78);
-  --card-2: #171a2d;
+  --bg: #080a14;
+
+  --card: rgba(20, 23, 42, 0.78);
+  --card-light: rgba(255, 255, 255, 0.045);
 
   --yellow: #facc15;
   --gold: #f59e0b;
@@ -19,24 +15,22 @@
   --cyan: #38bdf8;
 
   --white: #ffffff;
-  --muted: #8b8eaa;
-  --muted-2: #666a88;
+  --muted: #9295b3;
+  --muted-dark: #696d8d;
 
-  --border: rgba(255, 255, 255, 0.07);
+  --border: rgba(255, 255, 255, 0.075);
 
-  --radius: 22px;
+  --radius: 20px;
 }
 
 
-/* =========================================================
+/* =====================================================
    PAGE
-   ========================================================= */
+===================================================== */
 
 .page {
   position: relative;
-
   min-height: 100vh;
-
   overflow-x: hidden;
 
   color: var(--white);
@@ -45,58 +39,56 @@
     radial-gradient(
       circle at 0% 0%,
       rgba(139, 92, 246, 0.14),
-      transparent 30%
+      transparent 28%
     ),
     radial-gradient(
-      circle at 100% 10%,
+      circle at 100% 8%,
       rgba(250, 204, 21, 0.08),
-      transparent 25%
+      transparent 24%
     ),
     radial-gradient(
       circle at 50% 100%,
-      rgba(56, 189, 248, 0.05),
-      transparent 30%
+      rgba(56, 189, 248, 0.045),
+      transparent 28%
     ),
     var(--bg);
 
-  padding-bottom: 100px;
+  padding-bottom: 110px;
 }
 
 
-/* =========================================================
-   BACKGROUND
-   ========================================================= */
+/* =====================================================
+   BACKGROUND EFFECTS
+===================================================== */
 
 .backgroundGlow,
 .backgroundGlowTwo {
   position: fixed;
 
-  width: 260px;
-  height: 260px;
+  width: 280px;
+  height: 280px;
 
   border-radius: 50%;
 
   pointer-events: none;
-
-  filter: blur(80px);
+  filter: blur(90px);
 
   z-index: 0;
 }
 
 .backgroundGlow {
+  left: -170px;
   top: 25%;
-  left: -150px;
 
   background: rgba(139, 92, 246, 0.08);
 }
 
 .backgroundGlowTwo {
-  right: -150px;
-  bottom: 20%;
+  right: -170px;
+  bottom: 18%;
 
   background: rgba(250, 204, 21, 0.05);
 }
-
 
 .bgParticle {
   position: fixed;
@@ -111,66 +103,58 @@
   opacity: 0.3;
 
   pointer-events: none;
-
   z-index: 0;
 
-  animation: floatParticle 9s linear infinite;
+  animation: floatParticle 10s linear infinite;
 }
 
 .p1 {
-  left: 12%;
+  left: 15%;
   bottom: -10px;
-  animation-delay: 1s;
 }
 
 .p2 {
-  left: 32%;
+  left: 35%;
   bottom: -20px;
-  animation-delay: 4s;
+  animation-delay: 3s;
 }
 
 .p3 {
-  left: 55%;
+  left: 60%;
   bottom: -10px;
-  animation-delay: 2s;
-}
-
-.p4 {
-  left: 76%;
-  bottom: -20px;
   animation-delay: 5s;
 }
 
-.p5 {
-  left: 90%;
-  bottom: -10px;
+.p4 {
+  left: 82%;
+  bottom: -20px;
   animation-delay: 7s;
 }
 
 @keyframes floatParticle {
-  from {
+  0% {
     transform: translateY(0);
     opacity: 0;
   }
 
   20% {
-    opacity: 0.35;
+    opacity: 0.3;
   }
 
   80% {
-    opacity: 0.12;
+    opacity: 0.1;
   }
 
-  to {
+  100% {
     transform: translateY(-650px);
     opacity: 0;
   }
 }
 
 
-/* =========================================================
+/* =====================================================
    CONTENT
-   ========================================================= */
+===================================================== */
 
 .content {
   position: relative;
@@ -183,9 +167,9 @@
 }
 
 
-/* =========================================================
-   TOP BAR
-   ========================================================= */
+/* =====================================================
+   TOPBAR
+===================================================== */
 
 .topbar {
   display: flex;
@@ -198,11 +182,10 @@
 .logo {
   display: flex;
   align-items: center;
-
   gap: 7px;
 
   font-size: 15px;
-  font-weight: 850;
+  font-weight: 900;
 
   letter-spacing: -0.3px;
 }
@@ -216,7 +199,7 @@
   background: var(--yellow);
 
   box-shadow:
-    0 0 12px rgba(250, 204, 21, 0.8);
+    0 0 12px rgba(250, 204, 21, 0.9);
 }
 
 .iconBtn {
@@ -229,25 +212,28 @@
   align-items: center;
   justify-content: center;
 
-  color: white;
+  color: #fff;
 
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.045);
 
   border: 1px solid var(--border);
-
   border-radius: 14px;
 
   cursor: pointer;
 
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 
-  transition: 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .iconBtn:hover {
   transform: translateY(-2px);
 
-  background: rgba(250, 204, 21, 0.09);
+  background: rgba(250, 204, 21, 0.08);
 
   border-color: rgba(250, 204, 21, 0.25);
 }
@@ -270,66 +256,66 @@
   background: var(--gold);
 
   box-shadow:
-    0 0 10px rgba(245, 158, 11, 0.8);
+    0 0 10px rgba(245, 158, 11, 0.9);
 }
 
 
-/* =========================================================
+/* =====================================================
    GREETING
-   ========================================================= */
+===================================================== */
 
 .greeting {
-  padding: 18px 18px 24px;
+  padding: 20px 18px 25px;
 }
 
 .eyebrow {
   display: inline-block;
 
-  margin-bottom: 8px;
-
-  font-size: 9px;
-  font-weight: 800;
+  margin-bottom: 9px;
 
   color: var(--yellow);
 
-  letter-spacing: 1.5px;
+  font-size: 9px;
+  font-weight: 900;
+
+  letter-spacing: 1.6px;
 }
 
 .greeting h1 {
   margin: 0;
 
-  font-size: clamp(24px, 6vw, 34px);
+  font-size: clamp(25px, 6vw, 36px);
 
-  line-height: 1.15;
+  line-height: 1.12;
 
   font-weight: 900;
 
-  letter-spacing: -0.8px;
+  letter-spacing: -1px;
 }
 
 .greeting h1 span {
   color: var(--yellow);
 
   text-shadow:
-    0 0 25px rgba(250, 204, 21, 0.18);
+    0 0 28px rgba(250, 204, 21, 0.18);
 }
 
 .greeting p {
   max-width: 600px;
 
-  margin: 8px 0 0;
+  margin: 9px 0 0;
 
   color: var(--muted);
 
   font-size: 12.5px;
 
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 
-/* =========================================================
+/* =====================================================
    LEVEL CARD
-   ========================================================= */
+===================================================== */
 
 .levelCard {
   position: relative;
@@ -337,64 +323,64 @@
   display: flex;
   align-items: center;
 
-  gap: 17px;
+  gap: 18px;
 
   margin: 0 18px 20px;
 
-  padding: 19px;
+  padding: 20px;
 
   overflow: hidden;
 
   border: 1px solid rgba(250, 204, 21, 0.18);
 
-  border-radius: var(--radius);
+  border-radius: 23px;
 
   background:
     linear-gradient(
       145deg,
-      rgba(35, 38, 64, 0.9),
-      rgba(19, 21, 38, 0.88)
+      rgba(35, 38, 64, 0.92),
+      rgba(17, 20, 37, 0.9)
     );
 
   box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.3),
+    0 20px 55px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .levelCardGlow {
   position: absolute;
 
-  width: 180px;
-  height: 180px;
-
-  right: -90px;
+  right: -80px;
   top: -100px;
+
+  width: 190px;
+  height: 190px;
 
   border-radius: 50%;
 
-  background: rgba(250, 204, 21, 0.08);
+  background: rgba(250, 204, 21, 0.09);
 
-  filter: blur(20px);
+  filter: blur(30px);
 
   pointer-events: none;
 }
 
 
-/* =========================================================
-   HEX
-   ========================================================= */
+/* =====================================================
+   HEX BADGE
+===================================================== */
 
 .hexBadge {
   position: relative;
 
-  flex-shrink: 0;
-
-  width: 72px;
-  height: 72px;
+  width: 74px;
+  height: 74px;
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  flex-shrink: 0;
 }
 
 .hexBadge svg {
@@ -406,26 +392,24 @@
   height: 100%;
 
   filter:
-    drop-shadow(0 0 9px rgba(250, 204, 21, 0.4));
+    drop-shadow(
+      0 0 12px rgba(250, 204, 21, 0.4)
+    );
 }
 
 .hexBadgeContent {
   position: relative;
-
   z-index: 2;
 
   display: flex;
   flex-direction: column;
-
   align-items: center;
-  justify-content: center;
 
-  color: #191407;
+  color: #181306;
 }
 
 .hexBadgeContent span {
   font-size: 7px;
-
   font-weight: 900;
 
   letter-spacing: 1px;
@@ -434,45 +418,41 @@
 .hexBadgeContent strong {
   margin-top: 2px;
 
-  font-size: 23px;
-
+  font-size: 24px;
   line-height: 1;
 
   font-weight: 950;
 }
 
 
-/* =========================================================
-   XP
-   ========================================================= */
+/* =====================================================
+   LEVEL INFO
+===================================================== */
 
 .levelInfo {
   flex: 1;
-
   min-width: 0;
 }
 
 .xpHeader {
   display: flex;
-
-  justify-content: space-between;
   align-items: flex-end;
+  justify-content: space-between;
 
-  gap: 12px;
+  gap: 15px;
 
-  margin-bottom: 9px;
+  margin-bottom: 10px;
 }
 
 .smallLabel {
   display: block;
 
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 
-  color: var(--muted-2);
+  color: var(--muted-dark);
 
   font-size: 8px;
-
-  font-weight: 800;
+  font-weight: 900;
 
   letter-spacing: 1px;
 }
@@ -480,46 +460,45 @@
 .xpValue {
   color: var(--yellow);
 
-  font-size: 21px;
-
+  font-size: 22px;
   font-weight: 900;
 
   line-height: 1;
 }
 
 .xpValue small {
-  font-size: 11px;
-
+  font-size: 10px;
   font-weight: 800;
 }
 
 .nextLevel {
   display: flex;
   flex-direction: column;
-
   align-items: flex-end;
 
   gap: 2px;
 }
 
 .nextLevel span {
-  color: var(--muted-2);
+  color: var(--muted-dark);
 
-  font-size: 9px;
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
 }
 
 .nextLevel strong {
-  color: white;
+  color: #fff;
 
-  font-size: 13px;
-
-  font-weight: 850;
+  font-size: 14px;
+  font-weight: 900;
 }
 
 
-/* =========================================================
+/* =====================================================
    PROGRESS
-   ========================================================= */
+===================================================== */
 
 .progressTrack {
   position: relative;
@@ -533,13 +512,15 @@
   background: rgba(255, 255, 255, 0.07);
 
   box-shadow:
-    inset 0 1px 3px rgba(0, 0, 0, 0.3);
+    inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .progressFill {
   position: relative;
 
   height: 100%;
+
+  min-width: 0;
 
   border-radius: inherit;
 
@@ -552,9 +533,7 @@
     );
 
   box-shadow:
-    0 0 12px rgba(250, 204, 21, 0.55);
-
-  overflow: hidden;
+    0 0 15px rgba(250, 204, 21, 0.5);
 }
 
 .progressFill::after {
@@ -563,7 +542,7 @@
   position: absolute;
 
   top: 0;
-  left: -70%;
+  left: -60%;
 
   width: 50%;
   height: 100%;
@@ -576,12 +555,12 @@
       transparent
     );
 
-  animation: shimmer 2.4s infinite;
+  animation: shimmer 2.5s infinite;
 }
 
 @keyframes shimmer {
   from {
-    left: -70%;
+    left: -60%;
   }
 
   to {
@@ -591,12 +570,11 @@
 
 .progressBottom {
   display: flex;
-
   justify-content: space-between;
 
   margin-top: 6px;
 
-  color: var(--muted-2);
+  color: var(--muted-dark);
 
   font-size: 9px;
 }
@@ -606,12 +584,21 @@
 }
 
 
-/* =========================================================
-   SECTION
-   ========================================================= */
+/* =====================================================
+   REWARD SECTION
+===================================================== */
+
+.rewardSection {
+  margin: 0 18px 26px;
+}
+
+
+/* =====================================================
+   GENERAL SECTION
+===================================================== */
 
 .section {
-  padding: 0 18px 24px;
+  padding: 0 18px 26px;
 }
 
 .sectionHeading {
@@ -620,12 +607,12 @@
 
   gap: 10px;
 
-  margin-bottom: 13px;
+  margin-bottom: 14px;
 }
 
 .headingIcon {
-  width: 34px;
-  height: 34px;
+  width: 35px;
+  height: 35px;
 
   display: flex;
   align-items: center;
@@ -635,17 +622,17 @@
 
   color: var(--yellow);
 
+  border: 1px solid rgba(250, 204, 21, 0.13);
+
   border-radius: 11px;
 
-  background: rgba(250, 204, 21, 0.09);
-
-  border: 1px solid rgba(250, 204, 21, 0.12);
+  background: rgba(250, 204, 21, 0.08);
 }
 
 .headingPurple {
   color: var(--purple);
 
-  background: rgba(167, 139, 250, 0.1);
+  background: rgba(167, 139, 250, 0.09);
 
   border-color: rgba(167, 139, 250, 0.14);
 }
@@ -654,8 +641,7 @@
   margin: 0;
 
   font-size: 15px;
-
-  font-weight: 850;
+  font-weight: 900;
 }
 
 .sectionHeading p {
@@ -667,14 +653,14 @@
 }
 
 
-/* =========================================================
-   BOOST
-   ========================================================= */
+/* =====================================================
+   TODAY BOOST
+===================================================== */
 
 .boostGrid {
   display: grid;
 
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 
   gap: 9px;
 }
@@ -682,26 +668,28 @@
 .boostCard {
   min-width: 0;
 
-  padding: 14px 7px;
+  padding: 15px 7px;
 
   text-align: center;
 
-  border-radius: 17px;
-
   border: 1px solid var(--border);
+
+  border-radius: 17px;
 
   background:
     linear-gradient(
       145deg,
       rgba(255, 255, 255, 0.055),
-      rgba(255, 255, 255, 0.02)
+      rgba(255, 255, 255, 0.018)
     );
 
-  transition: 0.25s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .boostCard:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
 
   border-color: rgba(250, 204, 21, 0.2);
 }
@@ -723,14 +711,13 @@
   display: block;
 
   font-size: 14px;
-
-  font-weight: 850;
+  font-weight: 900;
 }
 
 .boostCard > span {
   display: block;
 
-  margin-top: 2px;
+  margin-top: 3px;
 
   color: var(--muted);
 
@@ -738,7 +725,9 @@
 }
 
 
-/* Colors */
+/* =====================================================
+   COLORS
+===================================================== */
 
 .yellow {
   color: var(--yellow);
@@ -776,24 +765,23 @@
 }
 
 
-/* =========================================================
+/* =====================================================
    ROADMAP
-   ========================================================= */
+===================================================== */
 
 .roadmapSection {
   position: relative;
 
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 
-/* =========================================================
+/* =====================================================
    EARN HEADER
-   ========================================================= */
+===================================================== */
 
 .earnHeader {
   display: flex;
-
   align-items: center;
   justify-content: space-between;
 
@@ -805,22 +793,22 @@
 }
 
 .arrowBtn {
-  width: 37px;
-  height: 37px;
-
-  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  flex-shrink: 0;
+
   color: var(--yellow);
 
   border: 1px solid rgba(250, 204, 21, 0.2);
 
-  background: rgba(250, 204, 21, 0.08);
-
   border-radius: 50%;
+
+  background: rgba(250, 204, 21, 0.07);
 
   cursor: pointer;
 
@@ -830,16 +818,16 @@
 .arrowBtn:hover {
   transform: translateX(3px);
 
-  background: rgba(250, 204, 21, 0.14);
+  background: rgba(250, 204, 21, 0.13);
 
   box-shadow:
     0 0 20px rgba(250, 204, 21, 0.12);
 }
 
 
-/* =========================================================
+/* =====================================================
    EARN GRID
-   ========================================================= */
+===================================================== */
 
 .earnGrid {
   display: grid;
@@ -854,7 +842,7 @@
 .earnCard {
   position: relative;
 
-  min-height: 76px;
+  min-height: 78px;
 
   display: flex;
   align-items: center;
@@ -863,7 +851,7 @@
 
   padding: 12px;
 
-  color: white;
+  color: #fff;
 
   text-align: left;
 
@@ -883,13 +871,13 @@
   overflow: hidden;
 
   transition:
-    transform 0.22s ease,
-    border-color 0.22s ease,
-    background 0.22s ease;
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .earnCard:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
 
   border-color: rgba(250, 204, 21, 0.22);
 
@@ -906,8 +894,8 @@
 }
 
 .earnCardIcon {
-  width: 38px;
-  height: 38px;
+  width: 39px;
+  height: 39px;
 
   display: flex;
   align-items: center;
@@ -918,20 +906,19 @@
   border-radius: 12px;
 }
 
-.earnCard > span {
+.earnCard > span:not(.soonBadge) {
   flex: 1;
 
   font-size: 10.5px;
+  font-weight: 800;
 
-  line-height: 1.25;
-
-  font-weight: 750;
+  line-height: 1.3;
 }
 
 .cardArrow {
   flex-shrink: 0;
 
-  color: var(--muted-2);
+  color: var(--muted-dark);
 
   transition: 0.2s ease;
 }
@@ -942,10 +929,27 @@
   transform: translateX(2px);
 }
 
+.soonBadge {
+  flex-shrink: 0;
 
-/* =========================================================
-   REWARD CHEST
-   ========================================================= */
+  padding: 4px 7px;
+
+  color: var(--muted);
+
+  font-size: 7px;
+  font-weight: 900;
+
+  letter-spacing: 0.6px;
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.07);
+}
+
+
+/* =====================================================
+   LEVEL REWARD CARD
+===================================================== */
 
 .chestCard {
   position: relative;
@@ -954,23 +958,23 @@
   align-items: center;
   justify-content: space-between;
 
-  gap: 15px;
+  gap: 18px;
 
   margin: 0 18px;
 
-  padding: 19px;
+  padding: 20px;
 
   overflow: hidden;
 
-  border-radius: 21px;
-
   border: 1px solid rgba(250, 204, 21, 0.18);
+
+  border-radius: 22px;
 
   background:
     radial-gradient(
       circle at 85% 25%,
-      rgba(139, 92, 246, 0.15),
-      transparent 32%
+      rgba(139, 92, 246, 0.16),
+      transparent 34%
     ),
     linear-gradient(
       135deg,
@@ -979,13 +983,14 @@
     );
 
   box-shadow:
-    0 15px 40px rgba(0, 0, 0, 0.25);
+    0 18px 45px rgba(0, 0, 0, 0.25);
 }
 
 .chestContent {
   position: relative;
-
   z-index: 2;
+
+  min-width: 0;
 }
 
 .rewardTag {
@@ -996,28 +1001,26 @@
   color: var(--yellow);
 
   font-size: 8px;
+  font-weight: 900;
 
-  font-weight: 850;
-
-  letter-spacing: 1.3px;
+  letter-spacing: 1.4px;
 }
 
 .chestContent h2 {
   margin: 0;
 
-  font-size: 15px;
-
-  font-weight: 850;
+  font-size: 16px;
+  font-weight: 900;
 }
 
 .chestContent p {
-  margin: 5px 0 11px;
+  margin: 6px 0 12px;
 
   color: var(--muted);
 
   font-size: 10.5px;
 
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .chestContent p strong {
@@ -1032,11 +1035,7 @@
 
   padding: 9px 14px;
 
-  border: 0;
-
-  border-radius: 11px;
-
-  color: #191407;
+  color: #181306;
 
   background:
     linear-gradient(
@@ -1045,14 +1044,16 @@
       var(--yellow)
     );
 
-  font-size: 10.5px;
+  border: 0;
+  border-radius: 11px;
 
-  font-weight: 850;
+  font-size: 10.5px;
+  font-weight: 900;
 
   cursor: pointer;
 
   box-shadow:
-    0 7px 20px rgba(245, 158, 11, 0.2);
+    0 8px 22px rgba(245, 158, 11, 0.22);
 
   transition: 0.2s ease;
 }
@@ -1061,24 +1062,23 @@
   transform: translateY(-2px);
 
   box-shadow:
-    0 10px 25px rgba(245, 158, 11, 0.3);
+    0 11px 27px rgba(245, 158, 11, 0.32);
 }
 
 .giftBox {
   position: relative;
-
   z-index: 2;
+
+  width: 74px;
+  height: 74px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 72px;
-  height: 72px;
-
   flex-shrink: 0;
 
-  font-size: 42px;
+  color: var(--yellow);
 
   border-radius: 20px;
 
@@ -1086,12 +1086,17 @@
 
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  filter:
+    drop-shadow(
+      0 0 15px rgba(250, 204, 21, 0.15)
+    );
 }
 
 
-/* =========================================================
+/* =====================================================
    BOTTOM NAV
-   ========================================================= */
+===================================================== */
 
 .bottomNav {
   position: fixed;
@@ -1111,15 +1116,15 @@
     calc(10px + env(safe-area-inset-bottom));
 
   background:
-    rgba(13, 15, 30, 0.9);
+    rgba(10, 12, 25, 0.91);
 
   border-top: 1px solid rgba(255, 255, 255, 0.07);
 
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 
   box-shadow:
-    0 -15px 40px rgba(0, 0, 0, 0.3);
+    0 -15px 45px rgba(0, 0, 0, 0.32);
 }
 
 .navItem {
@@ -1133,17 +1138,16 @@
 
   gap: 4px;
 
-  padding: 5px 8px;
+  padding: 6px 8px;
 
-  color: var(--muted-2);
+  color: var(--muted-dark);
 
   background: none;
 
   border: 0;
 
   font-size: 9px;
-
-  font-weight: 700;
+  font-weight: 800;
 
   cursor: pointer;
 
@@ -1151,7 +1155,7 @@
 }
 
 .navItem:hover {
-  color: white;
+  color: #fff;
 
   transform: translateY(-2px);
 }
@@ -1167,7 +1171,7 @@
 
   top: -9px;
 
-  width: 25px;
+  width: 26px;
   height: 3px;
 
   border-radius: 99px;
@@ -1179,17 +1183,12 @@
 }
 
 
-/* =========================================================
+/* =====================================================
    TABLET
-   ========================================================= */
+===================================================== */
 
 @media (min-width: 600px) {
-
-  .topbar {
-    padding-left: 30px;
-    padding-right: 30px;
-  }
-
+  .topbar,
   .greeting {
     padding-left: 30px;
     padding-right: 30px;
@@ -1201,20 +1200,20 @@
   }
 
   .levelCard,
-  .chestCard {
+  .chestCard,
+  .rewardSection {
     margin-left: 30px;
     margin-right: 30px;
   }
 
   .levelCard {
     padding: 24px;
-
     gap: 22px;
   }
 
   .hexBadge {
-    width: 85px;
-    height: 85px;
+    width: 86px;
+    height: 86px;
   }
 
   .hexBadgeContent strong {
@@ -1235,7 +1234,6 @@
 
   .earnGrid {
     grid-template-columns: repeat(3, 1fr);
-
     gap: 13px;
   }
 
@@ -1243,7 +1241,6 @@
     min-height: 100px;
 
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
 
@@ -1256,12 +1253,11 @@
 }
 
 
-/* =========================================================
+/* =====================================================
    DESKTOP
-   ========================================================= */
+===================================================== */
 
 @media (min-width: 900px) {
-
   .page {
     padding-bottom: 35px;
   }
@@ -1275,7 +1271,7 @@
   }
 
   .greeting h1 {
-    font-size: 34px;
+    font-size: 36px;
   }
 
   .greeting p {
@@ -1291,9 +1287,14 @@
     border-radius: 25px;
   }
 
+  .rewardSection {
+    margin-left: 42px;
+    margin-right: 42px;
+  }
+
   .hexBadge {
-    width: 95px;
-    height: 95px;
+    width: 96px;
+    height: 96px;
   }
 
   .hexBadgeContent strong {
@@ -1307,7 +1308,6 @@
   .section {
     padding-left: 42px;
     padding-right: 42px;
-
     padding-bottom: 30px;
   }
 
@@ -1316,9 +1316,9 @@
   }
 
   .boostCard {
-    padding: 20px;
-
     min-height: 120px;
+
+    padding: 20px;
 
     display: flex;
     flex-direction: column;
@@ -1328,17 +1328,15 @@
 
   .earnGrid {
     grid-template-columns: repeat(6, 1fr);
-
     gap: 12px;
   }
 
   .earnCard {
     min-height: 125px;
-
     padding: 16px 8px;
   }
 
-  .earnCard > span {
+  .earnCard > span:not(.soonBadge) {
     font-size: 11px;
   }
 
@@ -1346,20 +1344,17 @@
     margin-left: 42px;
     margin-right: 42px;
 
-    padding: 24px;
+    padding: 25px;
   }
 
   .giftBox {
     width: 90px;
     height: 90px;
-
-    font-size: 50px;
   }
 
   .bottomNav {
     left: 50%;
     right: auto;
-
     bottom: 14px;
 
     width: min(650px, calc(100% - 40px));
@@ -1386,21 +1381,16 @@
 }
 
 
-/* =========================================================
+/* =====================================================
    LARGE DESKTOP
-   ========================================================= */
+===================================================== */
 
 @media (min-width: 1200px) {
-
   .content {
     max-width: 1220px;
   }
 
-  .topbar {
-    padding-left: 55px;
-    padding-right: 55px;
-  }
-
+  .topbar,
   .greeting {
     padding-left: 55px;
     padding-right: 55px;
@@ -1412,24 +1402,20 @@
   }
 
   .levelCard,
-  .chestCard {
+  .chestCard,
+  .rewardSection {
     margin-left: 55px;
     margin-right: 55px;
   }
 }
 
 
-/* =========================================================
+/* =====================================================
    SMALL MOBILE
-   ========================================================= */
+===================================================== */
 
 @media (max-width: 360px) {
-
-  .topbar {
-    padding-left: 14px;
-    padding-right: 14px;
-  }
-
+  .topbar,
   .greeting {
     padding-left: 14px;
     padding-right: 14px;
@@ -1441,14 +1427,14 @@
   }
 
   .levelCard,
-  .chestCard {
+  .chestCard,
+  .rewardSection {
     margin-left: 14px;
     margin-right: 14px;
   }
 
   .levelCard {
     gap: 12px;
-
     padding: 15px;
   }
 
@@ -1498,7 +1484,7 @@
     height: 34px;
   }
 
-  .earnCard > span {
+  .earnCard > span:not(.soonBadge) {
     font-size: 9.5px;
   }
 
@@ -1509,8 +1495,6 @@
   .giftBox {
     width: 55px;
     height: 55px;
-
-    font-size: 34px;
   }
 
   .chestContent h2 {
@@ -1527,37 +1511,36 @@
 
   .navItem {
     min-width: 48px;
-
     padding-left: 4px;
     padding-right: 4px;
   }
 }
 
 
-/* =========================================================
+/* =====================================================
    ACCESSIBILITY
-   ========================================================= */
+===================================================== */
 
-button:focus-visible {
+.iconBtn:focus-visible,
+.arrowBtn:focus-visible,
+.earnCard:focus-visible,
+.chestBtn:focus-visible,
+.navItem:focus-visible {
   outline: 2px solid var(--yellow);
-
   outline-offset: 3px;
 }
 
 
-/* =========================================================
+/* =====================================================
    REDUCED MOTION
-   ========================================================= */
+===================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
-
     animation-iteration-count: 1 !important;
-
     transition-duration: 0.01ms !important;
   }
 }
