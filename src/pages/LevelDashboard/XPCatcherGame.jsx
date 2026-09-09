@@ -7,6 +7,7 @@ import {
   Zap,
   Gem,
   Target,
+  Flame,
   Sparkles,
 } from "lucide-react";
 
@@ -15,26 +16,43 @@ import { gameConfig } from "../../data/levelData";
 
 let itemIdCounter = 0;
 
+// Streak thresholds that bump the score multiplier
+const COMBO_TIERS = [
+  { streak: 15, multiplier: 3 },
+  { streak: 7, multiplier: 2 },
+  { streak: 0, multiplier: 1 },
+];
+
+function getMultiplier(streak) {
+  return COMBO_TIERS.find((tier) => streak >= tier.streak).multiplier;
+}
+
 function XPCatcherGame({ onBack, onComplete }) {
   const [started, setStarted] = useState(false);
+  const [paused, setPaused] = useState(false);
   const [timeLeft, setTimeLeft] = useState(gameConfig.durationSeconds);
   const [score, setScore] = useState(0);
   const [caughtCount, setCaughtCount] = useState(0);
+  const [streak, setStreak] = useState(0);
+  const [bestStreak, setBestStreak] = useState(0);
   const [items, setItems] = useState([]);
   const [floatingScores, setFloatingScores] = useState([]);
   const [lastCaught, setLastCaught] = useState(null);
+  const [showInfo, setShowInfo] = useState(false);
 
   const arenaRef = useRef(null);
   const spawnIntervalRef = useRef(null);
   const timerIntervalRef = useRef(null);
   const finishTimeoutRef = useRef(null);
 
-  const spawnItem = useCallback(() => {
+  const spawnItem = useCallback((difficulty) => {
     const isVE = Math.random() > 0.62;
     const id = itemIdCounter++;
 
     const startX = Math.random() * 78 + 8;
-    const duration = 2.4 + Math.random() * 1.4;
+    const baseDuration = 2.4 + Math.random() * 1.4;
+    // Items fall faster as the round progresses
+    const duration = Math.max(1.3, baseDuration - difficulty * 0.9);
 
     setItems((prev) => [
       ...prev,
@@ -47,7 +65,14 @@ function XPCatcherGame({ onBack, onComplete }) {
     ]);
 
     window.setTimeout(() => {
-      setItems((prev) => prev.filter((item) => item.id !== id));
+      setItems((prev) => {
+        const wasMissed = prev.some((item) => item.id === id);
+        if (wasMissed) {
+          // Reached the bottom without being caught — streak resets
+          setStreak(0);
+        }
+        return prev.filter((item) => item.id !== id);
+      });
     }, duration * 1000 + 200);
   }, []);
 
@@ -58,11 +83,18 @@ function XPCatcherGame({ onBack, onComplete }) {
       prev.filter((current) => current.id !== item.id)
     );
 
-    const points = item.type === "VE" ? 15 : 10;
+    const basePoints = item.type === "VE" ? 15 : 10;
+    const nextStreak = streak + 1;
+    const multiplier = getMultiplier(nextStreak);
+    const points = basePoints * multiplier;
 
+    setStreak(nextStreak);
+    setBestStreak((prev) => Math.max(prev, nextStreak));
     setScore((prev) => prev + points);
     setCaughtCount((prev) => prev + 1);
     setLastCaught(item.type);
+
+    if (navigator.vibrate) navigator.vibrate(12);
 
     const rect = arenaRef.current?.getBoundingClientRect();
 
@@ -77,7 +109,7 @@ function XPCatcherGame({ onBack, onComplete }) {
         id: floatId,
         x: fx,
         y: fy,
-        text: `+${points}`,
+        text: multiplier > 1 ? `+${points} ×${multiplier}` : `+${points}`,
         type: item.type,
       },
     ]);
@@ -99,16 +131,29 @@ function XPCatcherGame({ onBack, onComplete }) {
     clearTimeout(finishTimeoutRef.current);
 
     setStarted(true);
+    setPaused(false);
     setScore(0);
     setCaughtCount(0);
+    setStreak(0);
+    setBestStreak(0);
     setTimeLeft(gameConfig.durationSeconds);
     setItems([]);
     setFloatingScores([]);
     setLastCaught(null);
+    setShowInfo(false);
   };
 
+  // Pause automatically if the tab/app loses focus — avoids the clock
+  // burning down while the player isn't actually looking
   useEffect(() => {
-    if (!started) return;
+    const handleVisibility = () => setPaused(document.hidden);
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibility);
+  }, []);
+
+  useEffect(() => {
+    if (!started || paused) return;
 
     timerIntervalRef.current = setInterval(() => {
       setTimeLeft((time) => {
@@ -122,17 +167,20 @@ function XPCatcherGame({ onBack, onComplete }) {
     }, 1000);
 
     return () => clearInterval(timerIntervalRef.current);
-  }, [started]);
+  }, [started, paused]);
 
   useEffect(() => {
-    if (!started || timeLeft <= 0) return;
+    if (!started || timeLeft <= 0 || paused) return;
+
+    const difficulty = 1 - timeLeft / gameConfig.durationSeconds;
+    const spawnDelay = Math.max(320, 560 - difficulty * 220);
 
     spawnIntervalRef.current = setInterval(() => {
-      spawnItem();
-    }, 560);
+      spawnItem(difficulty);
+    }, spawnDelay);
 
     return () => clearInterval(spawnIntervalRef.current);
-  }, [started, timeLeft, spawnItem]);
+  }, [started, timeLeft, paused, spawnItem]);
 
   useEffect(() => {
     if (!started || timeLeft !== 0) return;
@@ -154,8 +202,11 @@ function XPCatcherGame({ onBack, onComplete }) {
     };
   }, []);
 
-  const timerDanger =
-    timeLeft <= 5 && started;
+  const timerDanger = timeLeft <= 5 && started;
+  const progressPct = Math.max(
+    0,
+    Math.min(100, (timeLeft / gameConfig.durationSeconds) * 100)
+  );
 
   return (
     <div className={styles.page}>
@@ -198,6 +249,19 @@ function XPCatcherGame({ onBack, onComplete }) {
         )}
       </header>
 
+      {/* TIMER PROGRESS */}
+      {started && (
+        <div className={styles.progressTrack}>
+          <motion.div
+            className={`${styles.progressFill} ${
+              timerDanger ? styles.progressDanger : ""
+            }`}
+            animate={{ width: `${progressPct}%` }}
+            transition={{ duration: 0.35, ease: "linear" }}
+          />
+        </div>
+      )}
+
       {/* HEADER */}
       <section className={styles.header}>
         <div className={styles.gameEyebrow}>
@@ -211,13 +275,32 @@ function XPCatcherGame({ onBack, onComplete }) {
           <button
             className={styles.infoBtn}
             aria-label="Game information"
+            aria-expanded={showInfo}
             type="button"
+            onClick={() => setShowInfo((prev) => !prev)}
           >
             <Info size={15} />
           </button>
         </div>
 
         <p>{gameConfig.description}</p>
+
+        <AnimatePresence>
+          {showInfo && (
+            <motion.div
+              className={styles.infoPopover}
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              onClick={() => setShowInfo(false)}
+              role="note"
+            >
+              Chain catches without missing to build a streak — 7 in a row
+              doubles your points, 15 in a row triples them. Miss one and the
+              streak resets.
+            </motion.div>
+          )}
+        </AnimatePresence>
       </section>
 
       {/* SCORE HUD */}
@@ -244,14 +327,21 @@ function XPCatcherGame({ onBack, onComplete }) {
           </div>
         </div>
 
-        <div className={styles.scoreCard}>
+        <div
+          className={`${styles.scoreCard} ${
+            streak >= 7 ? styles.scoreCardHot : ""
+          }`}
+        >
           <div className={`${styles.scoreIcon} ${styles.scoreGold}`}>
-            <Gem size={17} />
+            <Flame size={17} />
           </div>
 
           <div>
-            <span>Bonus</span>
-            <strong>+15</strong>
+            <span>Streak</span>
+            <strong>
+              {streak}
+              {getMultiplier(streak) > 1 ? ` ×${getMultiplier(streak)}` : ""}
+            </strong>
           </div>
         </div>
       </section>
@@ -305,8 +395,8 @@ function XPCatcherGame({ onBack, onComplete }) {
             <h2>Catch the XP!</h2>
 
             <p>
-              Tap the falling rewards before they
-              disappear. VE coins give you extra points.
+              Tap the falling rewards before they disappear. Chain catches
+              to build a streak and multiply your points.
             </p>
 
             <div className={styles.rules}>
@@ -321,6 +411,18 @@ function XPCatcherGame({ onBack, onComplete }) {
                 <span>VE Gem</span>
                 <strong>+15</strong>
               </div>
+
+              <div>
+                <Flame size={15} />
+                <span>7 streak</span>
+                <strong>×2</strong>
+              </div>
+
+              <div>
+                <Flame size={15} />
+                <span>15 streak</span>
+                <strong>×3</strong>
+              </div>
             </div>
 
             <button
@@ -334,6 +436,18 @@ function XPCatcherGame({ onBack, onComplete }) {
             <small>
               {gameConfig.durationSeconds} seconds challenge
             </small>
+          </motion.div>
+        )}
+
+        {started && paused && (
+          <motion.div
+            className={styles.pausedOverlay}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <Clock3 size={26} />
+            <h2>Paused</h2>
+            <p>Come back to this tab to keep catching.</p>
           </motion.div>
         )}
 
@@ -371,7 +485,7 @@ function XPCatcherGame({ onBack, onComplete }) {
                 ease: "linear",
               }}
               onPointerDown={(e) =>
-                handleCatch(item, e)
+                started && !paused && handleCatch(item, e)
               }
             >
               <span className={styles.orbShine} />
@@ -430,7 +544,11 @@ function XPCatcherGame({ onBack, onComplete }) {
         </AnimatePresence>
 
         {/* BASKET */}
-        <div className={styles.basket}>
+        <div
+          className={`${styles.basket} ${
+            lastCaught ? styles.basketPulse : ""
+          }`}
+        >
           <div className={styles.basketGlow} />
           <div className={styles.basketHandle} />
           <div className={styles.basketBody}>
@@ -439,7 +557,7 @@ function XPCatcherGame({ onBack, onComplete }) {
         </div>
 
         {/* BOTTOM HINT */}
-        {started && (
+        {started && !paused && (
           <div className={styles.gameHint}>
             <span>Tap rewards to catch them</span>
           </div>
@@ -454,8 +572,8 @@ function XPCatcherGame({ onBack, onComplete }) {
         </div>
 
         <div>
-          <span>Rewards caught</span>
-          <strong>{caughtCount}</strong>
+          <span>Best streak</span>
+          <strong>{bestStreak}</strong>
         </div>
 
         <div>
