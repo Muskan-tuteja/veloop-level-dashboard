@@ -1,27 +1,114 @@
+/* ============================================
+   LEVEL ROADMAP
+============================================ */
+
 .wrap {
-  padding: 0 20px 18px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 26px 24px 22px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(124, 58, 237, 0.10),
+      transparent 45%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(25, 28, 48, 0.95),
+      rgba(14, 17, 31, 0.98)
+    );
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+  overflow: hidden;
 }
+
+
+/* ============================================
+   HEADER
+============================================ */
 
 .headerRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 14px;
+  gap: 12px;
+  margin-bottom: 30px;
 }
+
+
+.headerIcon {
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 12px;
+
+  color: #facc15;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(250, 204, 21, 0.15),
+      rgba(245, 158, 11, 0.06)
+    );
+
+  border: 1px solid rgba(250, 204, 21, 0.18);
+
+  box-shadow:
+    0 8px 25px rgba(250, 204, 21, 0.08);
+}
+
 
 .title {
-  font-size: 13px;
+  display: block;
+
+  color: #f8fafc;
+
+  font-size: 16px;
   font-weight: 800;
-  color: #fff;
+
+  letter-spacing: -0.01em;
+
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
+
+.subtitle {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #7f879d;
+
+  font-size: 11px;
+}
+
+
+/* ============================================
+   TRACK
+============================================ */
+
 .track {
+  width: 100%;
+
   display: flex;
+  align-items: flex-start;
+
+  position: relative;
+
+  padding: 32px 4px 8px;
+
   overflow-x: auto;
-  gap: 10px;
-  padding-bottom: 4px;
+  overflow-y: visible;
+
   scrollbar-width: none;
 }
 
@@ -29,80 +116,452 @@
   display: none;
 }
 
+
+/* ============================================
+   NODE
+============================================ */
+
 .node {
-  flex-shrink: 0;
-  width: 130px;
+  flex: 1;
+  min-width: 120px;
+
+  position: relative;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  position: relative;
+
+  text-align: center;
 }
 
-.circle {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 900;
-  font-size: 16px;
-  position: relative;
-  z-index: 1;
-  border: 2px solid transparent;
-}
+
+/* ============================================
+   CONNECTOR
+============================================ */
 
 .connector {
   position: absolute;
+
   top: 28px;
-  left: 50%;
-  width: 100%;
+
+  left: calc(50% + 28px);
+  right: calc(-50% + 28px);
+
   height: 3px;
-  background: rgba(255, 255, 255, 0.08);
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.10),
+      rgba(255, 255, 255, 0.05)
+    );
+
   z-index: 0;
 }
 
-.label {
-  font-size: 12px;
-  font-weight: 700;
-  text-align: center;
-  color: #d4d5e8;
+
+.connectorDone {
+  background:
+    linear-gradient(
+      90deg,
+      #facc15,
+      #f59e0b
+    );
+
+  box-shadow:
+    0 0 14px rgba(250, 204, 21, 0.30);
 }
 
-.reward {
-  font-size: 10.5px;
-  color: #9294b3;
-  text-align: center;
+
+/* ============================================
+   CIRCLES
+============================================ */
+
+.circleCompleted,
+.circleCurrent,
+.circleLocked {
+  width: 56px;
+  height: 56px;
+
+  position: relative;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  z-index: 2;
+
+  font-size: 15px;
+  font-weight: 900;
 }
+
+
+/* ============================================
+   COMPLETED
+============================================ */
+
+.circleCompleted {
+  color: #111827;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fde047,
+      #f59e0b
+    );
+
+  border: 3px solid rgba(250, 204, 21, 0.45);
+
+  box-shadow:
+    0 0 0 6px rgba(250, 204, 21, 0.06),
+    0 8px 30px rgba(245, 158, 11, 0.22);
+}
+
+
+/* ============================================
+   CURRENT
+============================================ */
+
+.circleCurrent {
+  color: #171717;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff176,
+      #facc15,
+      #f59e0b
+    );
+
+  border: 3px solid rgba(255, 255, 255, 0.20);
+
+  box-shadow:
+    0 0 0 7px rgba(250, 204, 21, 0.08),
+    0 0 35px rgba(250, 204, 21, 0.32),
+    0 12px 35px rgba(245, 158, 11, 0.20);
+
+  animation: currentPulse 2.2s ease-in-out infinite;
+}
+
+
+@keyframes currentPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 7px rgba(250, 204, 21, 0.07),
+      0 0 30px rgba(250, 204, 21, 0.26),
+      0 12px 35px rgba(245, 158, 11, 0.18);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 11px rgba(250, 204, 21, 0.03),
+      0 0 45px rgba(250, 204, 21, 0.40),
+      0 14px 40px rgba(245, 158, 11, 0.24);
+  }
+}
+
+
+/* ============================================
+   LOCKED
+============================================ */
+
+.circleLocked {
+  color: #70788d;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(50, 54, 73, 0.95),
+      rgba(28, 31, 47, 0.95)
+    );
+
+  border: 2px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+
+/* ============================================
+   YOU ARE HERE
+============================================ */
 
 .youAreHere {
-  font-size: 8.5px;
-  font-weight: 800;
-  color: #1a1408;
-  background: #facc15;
-  padding: 2px 7px;
-  border-radius: 20px;
   position: absolute;
-  top: -14px;
+
+  top: -28px;
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  color: #171717;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fde047,
+      #facc15
+    );
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: 0.04em;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 5px 18px rgba(250, 204, 21, 0.18);
+
+  z-index: 5;
+}
+
+
+.youAreHere::after {
+  content: "";
+
+  position: absolute;
+
+  bottom: -5px;
   left: 50%;
-  transform: translateX(-50%);
+
+  width: 8px;
+  height: 8px;
+
+  transform: translateX(-50%) rotate(45deg);
+
+  background: #facc15;
+}
+
+
+/* ============================================
+   LABEL
+============================================ */
+
+.label {
+  margin-top: 14px;
+
+  color: #9aa1b5;
+
+  font-size: 12px;
+  font-weight: 750;
+
   white-space: nowrap;
 }
-.circleCurrent {
-  position: relative;
+
+
+.labelCurrent {
+  color: #facc15;
+
+  font-weight: 900;
 }
 
-.circleCurrent::before {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 2px solid #facc15;
-  animation: ringPulse 1.8s ease-out infinite;
+
+.labelCompleted {
+  color: #d8dbe5;
 }
 
-@keyframes ringPulse {
-  0% { transform: scale(0.9); opacity: 0.8; }
-  100% { transform: scale(1.4); opacity: 0; }
+
+/* ============================================
+   REWARD
+============================================ */
+
+.reward {
+  margin-top: 5px;
+
+  color: #666e83;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+.rewardCurrent {
+  color: #c7ccd9;
+}
+
+
+/* ============================================
+   STATUS TEXT
+============================================ */
+
+.completedText,
+.currentText,
+.lockedText {
+  margin-top: 7px;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.04em;
+
+  text-transform: uppercase;
+}
+
+
+.completedText {
+  color: #a8b0c1;
+}
+
+
+.currentText {
+  color: #facc15;
+}
+
+
+.lockedText {
+  color: #555d71;
+}
+
+
+/* ============================================
+   FOOTER
+============================================ */
+
+.roadmapFooter {
+  margin-top: 24px;
+  padding-top: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 18px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+
+.roadmapFooter > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+.roadmapFooter span {
+  color: #6f778b;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+
+.roadmapFooter strong {
+  color: #f8fafc;
+
+  font-size: 13px;
+  font-weight: 900;
+}
+
+
+.roadmapFooter svg {
+  color: #5d6578;
+}
+
+
+/* ============================================
+   TABLET
+============================================ */
+
+@media (max-width: 850px) {
+
+  .wrap {
+    padding: 22px 16px;
+  }
+
+  .track {
+    justify-content: flex-start;
+  }
+
+  .node {
+    min-width: 115px;
+  }
+
+}
+
+
+/* ============================================
+   MOBILE
+============================================ */
+
+@media (max-width: 600px) {
+
+  .wrap {
+    border-radius: 20px;
+    padding: 20px 12px;
+  }
+
+  .headerRow {
+    margin-bottom: 22px;
+  }
+
+  .headerIcon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+
+  .track {
+    padding-top: 30px;
+    padding-bottom: 5px;
+  }
+
+  .node {
+    min-width: 105px;
+  }
+
+  .circleCompleted,
+  .circleCurrent,
+  .circleLocked {
+    width: 50px;
+    height: 50px;
+  }
+
+  .connector {
+    top: 25px;
+
+    left: calc(50% + 25px);
+    right: calc(-50% + 25px);
+  }
+
+  .label {
+    font-size: 10px;
+  }
+
+  .reward {
+    font-size: 9px;
+  }
+
+  .roadmapFooter {
+    gap: 10px;
+  }
+
+}
+
+
+/* ============================================
+   REDUCED MOTION
+============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .circleCurrent {
+    animation: none;
+  }
 }

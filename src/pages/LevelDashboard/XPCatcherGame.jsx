@@ -9,6 +9,7 @@ import {
   Target,
   Flame,
   Sparkles,
+  Trophy,
 } from "lucide-react";
 
 import styles from "./XPCatcherGame.module.css";
@@ -16,7 +17,6 @@ import { gameConfig } from "../../data/levelData";
 
 let itemIdCounter = 0;
 
-// Streak thresholds that bump the score multiplier
 const COMBO_TIERS = [
   { streak: 15, multiplier: 3 },
   { streak: 7, multiplier: 2 },
@@ -24,290 +24,564 @@ const COMBO_TIERS = [
 ];
 
 function getMultiplier(streak) {
-  return COMBO_TIERS.find((tier) => streak >= tier.streak).multiplier;
+  return (
+    COMBO_TIERS.find((tier) => streak >= tier.streak)?.multiplier || 1
+  );
 }
 
 function XPCatcherGame({ onBack, onComplete }) {
   const [started, setStarted] = useState(false);
   const [paused, setPaused] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(gameConfig.durationSeconds);
+
+  const [timeLeft, setTimeLeft] = useState(
+    gameConfig.durationSeconds || 30
+  );
+
   const [score, setScore] = useState(0);
   const [caughtCount, setCaughtCount] = useState(0);
   const [streak, setStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
+
   const [items, setItems] = useState([]);
   const [floatingScores, setFloatingScores] = useState([]);
+
   const [lastCaught, setLastCaught] = useState(null);
+  const [missed, setMissed] = useState(false);
+  const [comboMessage, setComboMessage] = useState(null);
   const [showInfo, setShowInfo] = useState(false);
 
   const arenaRef = useRef(null);
-  const spawnIntervalRef = useRef(null);
-  const timerIntervalRef = useRef(null);
-  const finishTimeoutRef = useRef(null);
+
+  const timerRef = useRef(null);
+  const spawnRef = useRef(null);
+  const finishRef = useRef(null);
+
+  const gameFinishedRef = useRef(false);
+  const latestScoreRef = useRef(0);
+
+  /* ================= SPAWN ITEM ================= */
 
   const spawnItem = useCallback((difficulty) => {
-    const isVE = Math.random() > 0.62;
+    const isVE = Math.random() > 0.64;
+
     const id = itemIdCounter++;
 
-    const startX = Math.random() * 78 + 8;
-    const baseDuration = 2.4 + Math.random() * 1.4;
-    // Items fall faster as the round progresses
-    const duration = Math.max(1.3, baseDuration - difficulty * 0.9);
+    const x = Math.random() * 82 + 5;
 
-    setItems((prev) => [
-      ...prev,
-      {
-        id,
-        type: isVE ? "VE" : "XP",
-        x: startX,
-        duration,
-      },
-    ]);
+    const duration = Math.max(
+      1.55,
+      2.9 - difficulty * 1.1 + Math.random() * 0.65
+    );
+
+    const item = {
+      id,
+      type: isVE ? "VE" : "XP",
+      x,
+      duration,
+    };
+
+    setItems((prev) => [...prev, item]);
 
     window.setTimeout(() => {
       setItems((prev) => {
-        const wasMissed = prev.some((item) => item.id === id);
-        if (wasMissed) {
-          // Reached the bottom without being caught — streak resets
+        const exists = prev.some(
+          (current) => current.id === id
+        );
+
+        if (exists) {
           setStreak(0);
+          setMissed(true);
+
+          window.setTimeout(() => {
+            setMissed(false);
+          }, 350);
         }
-        return prev.filter((item) => item.id !== id);
+
+        return prev.filter(
+          (current) => current.id !== id
+        );
       });
-    }, duration * 1000 + 200);
+    }, duration * 1000 + 300);
   }, []);
 
-  const handleCatch = (item, e) => {
-    e.stopPropagation();
+  /* ================= FLOATING SCORE ================= */
+
+  const showFloatingScore = useCallback(
+    (item, event, points, multiplier) => {
+      const rect =
+        arenaRef.current?.getBoundingClientRect();
+
+      const x =
+        event.clientX - (rect?.left || 0);
+
+      const y =
+        event.clientY - (rect?.top || 0);
+
+      const id = itemIdCounter++;
+
+      setFloatingScores((prev) => [
+        ...prev,
+        {
+          id,
+          x,
+          y,
+          text:
+            multiplier > 1
+              ? `+${points} ×${multiplier}`
+              : `+${points}`,
+          type: item.type,
+        },
+      ]);
+
+      window.setTimeout(() => {
+        setFloatingScores((prev) =>
+          prev.filter(
+            (entry) => entry.id !== id
+          )
+        );
+      }, 700);
+    },
+    []
+  );
+
+  /* ================= CATCH ================= */
+
+  const handleCatch = (item, event) => {
+    if (!started || paused) return;
+
+    event.stopPropagation();
 
     setItems((prev) =>
-      prev.filter((current) => current.id !== item.id)
+      prev.filter(
+        (current) => current.id !== item.id
+      )
     );
 
-    const basePoints = item.type === "VE" ? 15 : 10;
+    const basePoints =
+      item.type === "VE" ? 15 : 10;
+
     const nextStreak = streak + 1;
-    const multiplier = getMultiplier(nextStreak);
-    const points = basePoints * multiplier;
+
+    const multiplier =
+      getMultiplier(nextStreak);
+
+    const points =
+      basePoints * multiplier;
+
+    const nextScore =
+      latestScoreRef.current + points;
+
+    latestScoreRef.current = nextScore;
+
+    setScore(nextScore);
+
+    setCaughtCount((prev) => prev + 1);
 
     setStreak(nextStreak);
-    setBestStreak((prev) => Math.max(prev, nextStreak));
-    setScore((prev) => prev + points);
-    setCaughtCount((prev) => prev + 1);
+
+    setBestStreak((prev) =>
+      Math.max(prev, nextStreak)
+    );
+
     setLastCaught(item.type);
+    setMissed(false);
 
-    if (navigator.vibrate) navigator.vibrate(12);
+    if (nextStreak === 7) {
+      setComboMessage("2× COMBO!");
+    }
 
-    const rect = arenaRef.current?.getBoundingClientRect();
+    if (nextStreak === 15) {
+      setComboMessage("3× COMBO!");
+    }
 
-    const fx = e.clientX - (rect?.left || 0);
-    const fy = e.clientY - (rect?.top || 0);
+    if (
+      nextStreak === 7 ||
+      nextStreak === 15
+    ) {
+      window.setTimeout(() => {
+        setComboMessage(null);
+      }, 900);
+    }
 
-    const floatId = itemIdCounter++;
+    if (navigator.vibrate) {
+      navigator.vibrate(12);
+    }
 
-    setFloatingScores((prev) => [
-      ...prev,
-      {
-        id: floatId,
-        x: fx,
-        y: fy,
-        text: multiplier > 1 ? `+${points} ×${multiplier}` : `+${points}`,
-        type: item.type,
-      },
-    ]);
-
-    window.setTimeout(() => {
-      setFloatingScores((prev) =>
-        prev.filter((item) => item.id !== floatId)
-      );
-    }, 750);
+    showFloatingScore(
+      item,
+      event,
+      points,
+      multiplier
+    );
 
     window.setTimeout(() => {
       setLastCaught(null);
-    }, 250);
+    }, 260);
   };
 
+  /* ================= START GAME ================= */
+
   const startGame = () => {
-    clearInterval(timerIntervalRef.current);
-    clearInterval(spawnIntervalRef.current);
-    clearTimeout(finishTimeoutRef.current);
+    clearInterval(timerRef.current);
+    clearInterval(spawnRef.current);
+    clearTimeout(finishRef.current);
+
+    gameFinishedRef.current = false;
+
+    latestScoreRef.current = 0;
 
     setStarted(true);
     setPaused(false);
+
+    setTimeLeft(
+      gameConfig.durationSeconds || 30
+    );
+
     setScore(0);
     setCaughtCount(0);
     setStreak(0);
     setBestStreak(0);
-    setTimeLeft(gameConfig.durationSeconds);
+
     setItems([]);
     setFloatingScores([]);
+
     setLastCaught(null);
+    setMissed(false);
+    setComboMessage(null);
     setShowInfo(false);
   };
 
-  // Pause automatically if the tab/app loses focus — avoids the clock
-  // burning down while the player isn't actually looking
-  useEffect(() => {
-    const handleVisibility = () => setPaused(document.hidden);
-    document.addEventListener("visibilitychange", handleVisibility);
-    return () =>
-      document.removeEventListener("visibilitychange", handleVisibility);
-  }, []);
+  /* ================= VISIBILITY / PAUSE ================= */
 
   useEffect(() => {
-    if (!started || paused) return;
+    const handleVisibility = () => {
+      if (!started) return;
 
-    timerIntervalRef.current = setInterval(() => {
-      setTimeLeft((time) => {
-        if (time <= 1) {
-          clearInterval(timerIntervalRef.current);
-          return 0;
-        }
+      setPaused(document.hidden);
+    };
 
-        return time - 1;
-      });
-    }, 1000);
+    document.addEventListener(
+      "visibilitychange",
+      handleVisibility
+    );
 
-    return () => clearInterval(timerIntervalRef.current);
-  }, [started, paused]);
+    return () => {
+      document.removeEventListener(
+        "visibilitychange",
+        handleVisibility
+      );
+    };
+  }, [started]);
 
-  useEffect(() => {
-    if (!started || timeLeft <= 0 || paused) return;
-
-    const difficulty = 1 - timeLeft / gameConfig.durationSeconds;
-    const spawnDelay = Math.max(320, 560 - difficulty * 220);
-
-    spawnIntervalRef.current = setInterval(() => {
-      spawnItem(difficulty);
-    }, spawnDelay);
-
-    return () => clearInterval(spawnIntervalRef.current);
-  }, [started, timeLeft, paused, spawnItem]);
+  /* ================= TIMER ================= */
 
   useEffect(() => {
-    if (!started || timeLeft !== 0) return;
+    if (
+      !started ||
+      paused ||
+      timeLeft <= 0
+    ) {
+      return;
+    }
 
-    clearInterval(spawnIntervalRef.current);
+    clearInterval(timerRef.current);
 
-    finishTimeoutRef.current = setTimeout(() => {
-      onComplete(score);
-    }, 500);
+    timerRef.current =
+      window.setInterval(() => {
+        setTimeLeft((previous) => {
+          if (previous <= 1) {
+            clearInterval(
+              timerRef.current
+            );
 
-    return () => clearTimeout(finishTimeoutRef.current);
-  }, [started, timeLeft, score, onComplete]);
+            return 0;
+          }
+
+          return previous - 1;
+        });
+      }, 1000);
+
+    return () => {
+      clearInterval(timerRef.current);
+    };
+  }, [
+    started,
+    paused,
+    timeLeft,
+  ]);
+
+  /* ================= SPAWNING ================= */
+
+  useEffect(() => {
+    if (
+      !started ||
+      paused ||
+      timeLeft <= 0
+    ) {
+      clearInterval(spawnRef.current);
+      return;
+    }
+
+    const duration =
+      gameConfig.durationSeconds || 30;
+
+    const difficulty =
+      1 - timeLeft / duration;
+
+    const spawnDelay = Math.max(
+      380,
+      650 - difficulty * 230
+    );
+
+    clearInterval(spawnRef.current);
+
+    spawnRef.current =
+      window.setInterval(() => {
+        spawnItem(difficulty);
+      }, spawnDelay);
+
+    return () => {
+      clearInterval(spawnRef.current);
+    };
+  }, [
+    started,
+    paused,
+    timeLeft,
+    spawnItem,
+  ]);
+
+  /* ================= GAME FINISH ================= */
+
+  useEffect(() => {
+    if (
+      !started ||
+      timeLeft !== 0 ||
+      gameFinishedRef.current
+    ) {
+      return;
+    }
+
+    gameFinishedRef.current = true;
+
+    clearInterval(timerRef.current);
+    clearInterval(spawnRef.current);
+
+    /*
+      Use the latest score from ref.
+      This prevents result screen from receiving
+      an old score value.
+    */
+
+    const finalScore =
+      latestScoreRef.current;
+
+    finishRef.current =
+      window.setTimeout(() => {
+        onComplete(finalScore);
+      }, 500);
+
+    return () => {
+      clearTimeout(
+        finishRef.current
+      );
+    };
+  }, [
+    started,
+    timeLeft,
+    onComplete,
+  ]);
+
+  /* ================= CLEANUP ================= */
 
   useEffect(() => {
     return () => {
-      clearInterval(timerIntervalRef.current);
-      clearInterval(spawnIntervalRef.current);
-      clearTimeout(finishTimeoutRef.current);
+      clearInterval(timerRef.current);
+      clearInterval(spawnRef.current);
+      clearTimeout(finishRef.current);
     };
   }, []);
 
-  const timerDanger = timeLeft <= 5 && started;
+  /* ================= UI VALUES ================= */
+
+  const timerDanger =
+    timeLeft <= 5 && started;
+
+  const duration =
+    gameConfig.durationSeconds || 30;
+
   const progressPct = Math.max(
     0,
-    Math.min(100, (timeLeft / gameConfig.durationSeconds) * 100)
+    Math.min(
+      100,
+      (timeLeft / duration) * 100
+    )
   );
 
-  return (
-    <div className={styles.page}>
-      <div className={styles.backgroundGlow} />
-      <div className={styles.backgroundGlowTwo} />
+  const multiplier =
+    getMultiplier(streak);
 
-      {/* TOP BAR */}
+  return (
+    <main className={styles.page}>
+      <div
+        className={styles.backgroundGlow}
+      />
+
+      <div
+        className={styles.backgroundGlowTwo}
+      />
+
+      {/* ================= TOP BAR ================= */}
+
       <header className={styles.topbar}>
         <button
+          type="button"
           className={styles.backBtn}
           onClick={onBack}
-          aria-label="Back"
+          aria-label="Back to dashboard"
         >
           <ArrowLeft size={18} />
         </button>
 
-        {started && (
+        {started ? (
           <motion.div
+            className={`${styles.timer} ${
+              timerDanger
+                ? styles.timerDanger
+                : ""
+            }`}
             animate={
               timerDanger
                 ? {
                     scale: [1, 1.08, 1],
                   }
-                : {}
+                : { scale: 1 }
             }
             transition={{
               duration: 0.6,
-              repeat: timerDanger ? Infinity : 0,
+              repeat: timerDanger
+                ? Infinity
+                : 0,
             }}
-            className={`${styles.timer} ${
-              timerDanger ? styles.timerDanger : ""
-            }`}
           >
             <Clock3 size={15} />
 
             <span>
-              00:{String(timeLeft).padStart(2, "0")}
+              00:
+              {String(timeLeft).padStart(
+                2,
+                "0"
+              )}
             </span>
           </motion.div>
+        ) : (
+          <div
+            className={styles.topStatus}
+          >
+            <Sparkles size={13} />
+            QUICK PLAY
+          </div>
         )}
       </header>
 
-      {/* TIMER PROGRESS */}
+      {/* ================= TIMER BAR ================= */}
+
       {started && (
-        <div className={styles.progressTrack}>
+        <div
+          className={styles.progressTrack}
+          aria-label="Time remaining"
+        >
           <motion.div
             className={`${styles.progressFill} ${
-              timerDanger ? styles.progressDanger : ""
+              timerDanger
+                ? styles.progressDanger
+                : ""
             }`}
-            animate={{ width: `${progressPct}%` }}
-            transition={{ duration: 0.35, ease: "linear" }}
+            animate={{
+              width: `${progressPct}%`,
+            }}
+            transition={{
+              duration: 0.3,
+              ease: "linear",
+            }}
           />
         </div>
       )}
 
-      {/* HEADER */}
+      {/* ================= HEADER ================= */}
+
       <section className={styles.header}>
-        <div className={styles.gameEyebrow}>
+        <div
+          className={styles.gameEyebrow}
+        >
           <Sparkles size={13} />
           QUICK CHALLENGE
         </div>
 
-        <div className={styles.titleLine}>
+        <div
+          className={styles.titleLine}
+        >
           <h1>{gameConfig.name}</h1>
 
           <button
+            type="button"
             className={styles.infoBtn}
+            onClick={() =>
+              setShowInfo(
+                (prev) => !prev
+              )
+            }
             aria-label="Game information"
             aria-expanded={showInfo}
-            type="button"
-            onClick={() => setShowInfo((prev) => !prev)}
           >
             <Info size={15} />
           </button>
         </div>
 
-        <p>{gameConfig.description}</p>
+        <p>
+          {gameConfig.description}
+        </p>
 
         <AnimatePresence>
           {showInfo && (
             <motion.div
-              className={styles.infoPopover}
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              onClick={() => setShowInfo(false)}
-              role="note"
+              className={
+                styles.infoPopover
+              }
+              initial={{
+                opacity: 0,
+                y: -6,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0,
+                y: -6,
+              }}
             >
-              Chain catches without missing to build a streak — 7 in a row
-              doubles your points, 15 in a row triples them. Miss one and the
-              streak resets.
+              Catch rewards before
+              they reach the bottom.
+              Chain catches to build
+              your streak. At 7 catches
+              you get 2× points, and at
+              15 catches you get 3×
+              points.
             </motion.div>
           )}
         </AnimatePresence>
       </section>
 
-      {/* SCORE HUD */}
+      {/* ================= SCORE HUD ================= */}
+
       <section className={styles.scoreBar}>
-        <div className={styles.scoreCard}>
-          <div className={`${styles.scoreIcon} ${styles.scorePurple}`}>
-            <Zap size={17} />
+        <div
+          className={styles.scoreCard}
+        >
+          <div
+            className={`${styles.scoreIcon} ${styles.scorePurple}`}
+          >
+            <Zap size={16} />
           </div>
 
           <div>
@@ -316,142 +590,285 @@ function XPCatcherGame({ onBack, onComplete }) {
           </div>
         </div>
 
-        <div className={styles.scoreCard}>
-          <div className={`${styles.scoreIcon} ${styles.scoreBlue}`}>
-            <Target size={17} />
-          </div>
-
-          <div>
-            <span>Caught</span>
-            <strong>{caughtCount}</strong>
-          </div>
-        </div>
-
         <div
           className={`${styles.scoreCard} ${
-            streak >= 7 ? styles.scoreCardHot : ""
+            streak >= 7
+              ? styles.scoreCardHot
+              : ""
           }`}
         >
-          <div className={`${styles.scoreIcon} ${styles.scoreGold}`}>
-            <Flame size={17} />
+          <div
+            className={`${styles.scoreIcon} ${styles.scoreGold}`}
+          >
+            <Flame size={16} />
           </div>
 
           <div>
             <span>Streak</span>
+
             <strong>
               {streak}
-              {getMultiplier(streak) > 1 ? ` ×${getMultiplier(streak)}` : ""}
+
+              {multiplier > 1
+                ? ` ×${multiplier}`
+                : ""}
+            </strong>
+          </div>
+        </div>
+
+        <div
+          className={styles.scoreCard}
+        >
+          <div
+            className={`${styles.scoreIcon} ${styles.scoreBlue}`}
+          >
+            <Target size={16} />
+          </div>
+
+          <div>
+            <span>Caught</span>
+            <strong>
+              {caughtCount}
             </strong>
           </div>
         </div>
       </section>
 
-      {/* GAME ARENA */}
-      <section
-        className={`${styles.arena} ${
-          lastCaught ? styles.arenaHit : ""
-        }`}
-        ref={arenaRef}
-      >
-        <div className={styles.arenaHeader}>
-          <span>Catch the rewards</span>
+      {/* ================= ARENA ================= */}
 
-          <div className={styles.legend}>
+      <section
+        ref={arenaRef}
+        className={`${styles.arena} ${
+          lastCaught
+            ? styles.arenaHit
+            : ""
+        } ${
+          missed
+            ? styles.arenaMiss
+            : ""
+        }`}
+      >
+        <div
+          className={styles.arenaHeader}
+        >
+          <div
+            className={
+              styles.arenaTitle
+            }
+          >
+            <span
+              className={
+                styles.liveDot
+              }
+            />
+            Catch the rewards
+          </div>
+
+          <div
+            className={styles.legend}
+          >
             <span>
-              <i className={styles.legendXP} />
+              <i
+                className={
+                  styles.legendXP
+                }
+              />
               XP
             </span>
 
             <span>
-              <i className={styles.legendVE} />
+              <i
+                className={
+                  styles.legendVE
+                }
+              />
               VE
             </span>
           </div>
         </div>
 
+        {/* ================= START SCREEN ================= */}
+
         {!started && (
           <motion.div
-            className={styles.startOverlay}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            className={
+              styles.startOverlay
+            }
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
           >
             <motion.div
-              className={styles.startIcon}
-              initial={{ scale: 0.7 }}
-              animate={{ scale: 1 }}
+              className={
+                styles.startIcon
+              }
+              initial={{
+                scale: 0.7,
+                rotate: -8,
+              }}
+              animate={{
+                scale: 1,
+                rotate: 0,
+              }}
               transition={{
                 duration: 0.45,
                 ease: "backOut",
               }}
             >
-              <Zap size={32} fill="currentColor" />
+              <Zap
+                size={31}
+                fill="currentColor"
+              />
             </motion.div>
 
-            <div className={styles.readyBadge}>
+            <div
+              className={
+                styles.readyBadge
+              }
+            >
               <Sparkles size={12} />
-              READY?
+              READY TO PLAY?
             </div>
 
-            <h2>Catch the XP!</h2>
+            <h2>Catch the XP</h2>
 
             <p>
-              Tap the falling rewards before they disappear. Chain catches
-              to build a streak and multiply your points.
+              Tap the falling rewards
+              before they disappear.
+              Keep your streak alive
+              to earn bigger scores.
             </p>
 
-            <div className={styles.rules}>
-              <div>
+            <div
+              className={styles.rules}
+            >
+              <div
+                className={
+                  styles.ruleXP
+                }
+              >
                 <Zap size={15} />
                 <span>XP Orb</span>
                 <strong>+10</strong>
               </div>
 
-              <div>
+              <div
+                className={
+                  styles.ruleVE
+                }
+              >
                 <Gem size={15} />
                 <span>VE Gem</span>
                 <strong>+15</strong>
               </div>
 
-              <div>
+              <div
+                className={
+                  styles.ruleCombo
+                }
+              >
                 <Flame size={15} />
                 <span>7 streak</span>
                 <strong>×2</strong>
               </div>
 
-              <div>
-                <Flame size={15} />
+              <div
+                className={
+                  styles.ruleCombo
+                }
+              >
+                <Trophy size={15} />
                 <span>15 streak</span>
                 <strong>×3</strong>
               </div>
             </div>
 
             <button
-              className={styles.startBtn}
+              type="button"
+              className={
+                styles.startBtn
+              }
               onClick={startGame}
             >
-              <Zap size={17} fill="currentColor" />
+              <Zap
+                size={17}
+                fill="currentColor"
+              />
               Start Game
             </button>
 
             <small>
-              {gameConfig.durationSeconds} seconds challenge
+              {duration}s challenge
             </small>
           </motion.div>
         )}
 
+        {/* ================= PAUSED ================= */}
+
         {started && paused && (
           <motion.div
-            className={styles.pausedOverlay}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            className={
+              styles.pausedOverlay
+            }
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
           >
-            <Clock3 size={26} />
-            <h2>Paused</h2>
-            <p>Come back to this tab to keep catching.</p>
+            <div
+              className={
+                styles.pauseIcon
+              }
+            >
+              <Clock3 size={26} />
+            </div>
+
+            <h2>Game Paused</h2>
+
+            <p>
+              Return to this tab to
+              continue playing.
+            </p>
           </motion.div>
         )}
 
-        {/* FALLING ITEMS */}
+        {/* ================= COMBO ================= */}
+
+        <AnimatePresence>
+          {comboMessage && (
+            <motion.div
+              className={
+                styles.comboMessage
+              }
+              initial={{
+                opacity: 0,
+                scale: 0.7,
+                y: 10,
+              }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0,
+                scale: 0.8,
+                y: -15,
+              }}
+            >
+              <Flame size={17} />
+              {comboMessage}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* ================= FALLING ITEMS ================= */}
+
         <AnimatePresence>
           {items.map((item) => (
             <motion.button
@@ -467,121 +884,217 @@ function XPCatcherGame({ onBack, onComplete }) {
                 left: `${item.x}%`,
               }}
               initial={{
-                top: "-12%",
+                top: "-10%",
                 opacity: 0,
-                scale: 0.7,
+                scale: 0.65,
               }}
               animate={{
-                top: "91%",
+                top: "84%",
                 opacity: 1,
                 scale: 1,
               }}
               exit={{
                 opacity: 0,
-                scale: 0.35,
+                scale: 0.4,
               }}
               transition={{
                 duration: item.duration,
                 ease: "linear",
               }}
-              onPointerDown={(e) =>
-                started && !paused && handleCatch(item, e)
+              onPointerDown={(event) =>
+                handleCatch(
+                  item,
+                  event
+                )
               }
             >
-              <span className={styles.orbShine} />
+              <span
+                className={
+                  styles.orbShine
+                }
+              />
 
-              {item.type === "VE" ? (
-                <Gem size={20} />
-              ) : (
-                <Zap
-                  size={20}
-                  fill="currentColor"
-                />
-              )}
+              <span
+                className={
+                  styles.orbIcon
+                }
+              >
+                {item.type === "VE" ? (
+                  <Gem size={20} />
+                ) : (
+                  <Zap
+                    size={20}
+                    fill="currentColor"
+                  />
+                )}
+              </span>
 
-              <span className={styles.itemValue}>
-                +{item.type === "VE" ? 15 : 10}
+              <span
+                className={
+                  styles.itemValue
+                }
+              >
+                +
+                {item.type === "VE"
+                  ? 15
+                  : 10}
               </span>
             </motion.button>
           ))}
         </AnimatePresence>
 
-        {/* FLOATING SCORE */}
+        {/* ================= FLOATING SCORE ================= */}
+
         <AnimatePresence>
-          {floatingScores.map((item) => (
-            <motion.div
-              key={item.id}
-              className={`${styles.floatScore} ${
-                item.type === "VE"
-                  ? styles.floatVE
-                  : ""
-              }`}
-              style={{
-                left: item.x,
-                top: item.y,
-              }}
-              initial={{
-                opacity: 0,
-                scale: 0.7,
-                y: 8,
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                y: -35,
-              }}
-              exit={{
-                opacity: 0,
-                y: -55,
-              }}
-              transition={{
-                duration: 0.7,
-              }}
-            >
-              {item.text}
-            </motion.div>
-          ))}
+          {floatingScores.map(
+            (item) => (
+              <motion.div
+                key={item.id}
+                className={`${styles.floatScore} ${
+                  item.type === "VE"
+                    ? styles.floatVE
+                    : ""
+                }`}
+                style={{
+                  left: item.x,
+                  top: item.y,
+                }}
+                initial={{
+                  opacity: 0,
+                  scale: 0.7,
+                  y: 8,
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: -38,
+                }}
+                exit={{
+                  opacity: 0,
+                  y: -55,
+                }}
+                transition={{
+                  duration: 0.65,
+                }}
+              >
+                {item.text}
+              </motion.div>
+            )
+          )}
         </AnimatePresence>
 
-        {/* BASKET */}
+        {/* ================= CATCH ZONE ================= */}
+
+        <div
+          className={styles.catchZone}
+        >
+          <span>DROP ZONE</span>
+        </div>
+
+        {/* ================= BASKET ================= */}
+
         <div
           className={`${styles.basket} ${
-            lastCaught ? styles.basketPulse : ""
+            lastCaught
+              ? styles.basketPulse
+              : ""
           }`}
         >
-          <div className={styles.basketGlow} />
-          <div className={styles.basketHandle} />
-          <div className={styles.basketBody}>
-            <Zap size={18} />
+          <div
+            className={
+              styles.basketGlow
+            }
+          />
+
+          <div
+            className={
+              styles.basketHandle
+            }
+          />
+
+          <div
+            className={
+              styles.basketBody
+            }
+          >
+            <Zap
+              size={19}
+              fill="currentColor"
+            />
           </div>
         </div>
 
-        {/* BOTTOM HINT */}
+        {/* ================= HINT ================= */}
+
         {started && !paused && (
-          <div className={styles.gameHint}>
-            <span>Tap rewards to catch them</span>
+          <div
+            className={
+              styles.gameHint
+            }
+          >
+            Tap a reward to catch
+            it
           </div>
+        )}
+
+        {missed && (
+          <motion.div
+            className={
+              styles.missMessage
+            }
+            initial={{
+              opacity: 0,
+              y: 5,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            exit={{
+              opacity: 0,
+            }}
+          >
+            MISS · STREAK RESET
+          </motion.div>
         )}
       </section>
 
-      {/* FOOTER STATS */}
-      <div className={styles.bottomInfo}>
+      {/* ================= BOTTOM STATS ================= */}
+
+      <div
+        className={styles.bottomInfo}
+      >
         <div>
-          <span>Current score</span>
-          <strong>{score} pts</strong>
+          <span>
+            Current score
+          </span>
+
+          <strong>
+            {score} pts
+          </strong>
         </div>
 
         <div>
-          <span>Best streak</span>
-          <strong>{bestStreak}</strong>
+          <span>
+            Best streak
+          </span>
+
+          <strong>
+            {bestStreak}
+          </strong>
         </div>
 
         <div>
-          <span>Time</span>
-          <strong>{timeLeft}s</strong>
+          <span>
+            Time left
+          </span>
+
+          <strong>
+            {timeLeft}s
+          </strong>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 
