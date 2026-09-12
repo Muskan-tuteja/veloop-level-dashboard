@@ -4,12 +4,10 @@ import {
   Play,
   ClipboardList,
   Users,
-  Gamepad2,
   Flame,
   Magnet,
   ChevronRight,
   Zap,
-  Lock,
   Sparkles,
 } from "lucide-react";
 
@@ -20,7 +18,6 @@ const iconMap = {
   play: Play,
   clipboard: ClipboardList,
   users: Users,
-  gamepad: Gamepad2,
   flame: Flame,
   magnet: Magnet,
 };
@@ -29,7 +26,6 @@ const iconColors = {
   play: "#a78bfa",
   clipboard: "#34d399",
   users: "#fb923c",
-  gamepad: "#60a5fa",
   flame: "#f87171",
   magnet: "#38bdf8",
 };
@@ -37,34 +33,47 @@ const iconColors = {
 const actionMap = {
   "watch-earn": "Start",
   "daily-missions": "View",
-  referral: "Invite",
-  "mini-games": "Play",
+  "refer-earn": "Invite",
   "streak-bonus": "View",
   "xp-catcher": "Play",
 };
 
 function EarnAndLevelUp({ onBack, onPlayGame }) {
-  const handleCardClick = (feature) => {
-    if (feature.comingSoon) return;
+  // ============================================
+  // HANDLE ACTIVITY CLICK
+  // ============================================
 
-    if (
-      feature.id === "mini-games" ||
-      feature.id === "xp-catcher"
-    ) {
-      onPlayGame();
+  const handleCardClick = (feature) => {
+    // XP Catcher is the actual game
+    if (feature.id === "xp-catcher") {
+      if (typeof onPlayGame === "function") {
+        onPlayGame();
+      }
+
+      return;
     }
+
+    // Other activities are currently UI-only
+    console.log(`${feature.title} clicked`);
   };
 
+  // ============================================
+  // ACTIVITY COUNTS
+  // ============================================
+
   const totalActivities = earningFeatures.length;
-  const availableActivities = earningFeatures.filter(
-    (feature) => !feature.comingSoon
-  ).length;
+
+  const availableActivities = earningFeatures.length;
 
   return (
     <div className={styles.page}>
-      {/* Header */}
+      {/* ========================================
+          HEADER
+      ======================================== */}
+
       <header className={styles.topbar}>
         <button
+          type="button"
           className={styles.backBtn}
           onClick={onBack}
           aria-label="Go back"
@@ -85,12 +94,23 @@ function EarnAndLevelUp({ onBack, onPlayGame }) {
         </div>
       </header>
 
-      {/* XP Motivation Card */}
+      {/* ========================================
+          XP MOTIVATION CARD
+      ======================================== */}
+
       <motion.section
         className={styles.progressCard}
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        initial={{
+          opacity: 0,
+          y: 12,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
+        transition={{
+          duration: 0.4,
+        }}
       >
         <div className={styles.progressGlow} />
 
@@ -101,7 +121,10 @@ function EarnAndLevelUp({ onBack, onPlayGame }) {
 
           <div className={styles.progressInfo}>
             <span>KEEP GOING</span>
-            <strong>Earn XP. Reach the next level.</strong>
+
+            <strong>
+              Earn XP. Reach the next level.
+            </strong>
           </div>
 
           <Sparkles
@@ -112,130 +135,243 @@ function EarnAndLevelUp({ onBack, onPlayGame }) {
 
         <div className={styles.progressStats}>
           <div>
-            <strong>{availableActivities}</strong>
-            <span>Activities available</span>
+            <strong>
+              {availableActivities}
+            </strong>
+
+            <span>
+              Activities available
+            </span>
           </div>
 
-          <div className={styles.progressDivider} />
+          <div
+            className={
+              styles.progressDivider
+            }
+          />
 
           <div>
-            <strong>{totalActivities}</strong>
-            <span>Total activities</span>
+            <strong>
+              {totalActivities}
+            </strong>
+
+            <span>
+              Total activities
+            </span>
           </div>
         </div>
       </motion.section>
 
-      {/* Section Heading */}
+      {/* ========================================
+          SECTION HEADER
+      ======================================== */}
+
       <div className={styles.sectionHeader}>
         <div>
-          <span className={styles.sectionEyebrow}>
+          <span
+            className={
+              styles.sectionEyebrow
+            }
+          >
             EARN XP
           </span>
 
-          <h2>Choose an activity</h2>
+          <h2>
+            Choose an activity
+          </h2>
         </div>
 
-        <div className={styles.activityCount}>
-          {availableActivities}/{totalActivities}
+        <div
+          className={
+            styles.activityCount
+          }
+        >
+          {availableActivities}/
+          {totalActivities}
         </div>
       </div>
 
-      {/* Activity Cards */}
+      {/* ========================================
+          ACTIVITY LIST
+      ======================================== */}
+
       <div className={styles.list}>
-        {earningFeatures.map((feature, i) => {
-          const Icon = iconMap[feature.icon] || Play;
-          const color = iconColors[feature.icon] || "#a78bfa";
-          const action = actionMap[feature.id] || "Start";
+        {earningFeatures.map(
+          (feature, index) => {
+            const Icon =
+              iconMap[feature.icon] ||
+              Play;
 
-          return (
-            <motion.button
-              type="button"
-              key={feature.id}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: i * 0.06,
-                duration: 0.3,
-              }}
-              className={`${styles.card} ${
-                feature.comingSoon ? styles.disabledCard : ""
-              }`}
-              onClick={() => handleCardClick(feature)}
-              disabled={feature.comingSoon}
-            >
-              {/* Icon */}
-              <div
-                className={styles.cardIcon}
-                style={{
-                  background: `${color}18`,
-                  color: color,
-                  borderColor: `${color}30`,
+            const color =
+              iconColors[
+                feature.icon
+              ] || "#a78bfa";
+
+            const action =
+              actionMap[
+                feature.id
+              ] || "Start";
+
+            return (
+              <motion.button
+                type="button"
+                key={feature.id}
+                initial={{
+                  opacity: 0,
+                  y: 12,
                 }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                transition={{
+                  delay:
+                    index * 0.06,
+                  duration: 0.3,
+                }}
+                className={
+                  styles.card
+                }
+                onClick={() =>
+                  handleCardClick(
+                    feature
+                  )
+                }
               >
-                <Icon size={21} />
-              </div>
+                {/* ==================================
+                    ICON
+                ================================== */}
 
-              {/* Content */}
-              <div className={styles.cardBody}>
-                <div className={styles.titleRow}>
-                  <p className={styles.cardTitle}>
-                    {feature.title}
+                <div
+                  className={
+                    styles.cardIcon
+                  }
+                  style={{
+                    background: `${color}18`,
+                    color: color,
+                    borderColor: `${color}30`,
+                  }}
+                >
+                  <Icon size={21} />
+                </div>
+
+                {/* ==================================
+                    CONTENT
+                ================================== */}
+
+                <div
+                  className={
+                    styles.cardBody
+                  }
+                >
+                  <div
+                    className={
+                      styles.titleRow
+                    }
+                  >
+                    <p
+                      className={
+                        styles.cardTitle
+                      }
+                    >
+                      {feature.title}
+                    </p>
+
+                    <span
+                      className={
+                        styles.xpBadge
+                      }
+                    >
+                      +
+                      {
+                        feature.xpReward
+                      }{" "}
+                      XP
+                    </span>
+                  </div>
+
+                  <p
+                    className={
+                      styles.cardDesc
+                    }
+                  >
+                    {
+                      feature.description
+                    }
                   </p>
 
-                  {!feature.comingSoon && (
-                    <span className={styles.xpBadge}>
-                      +{feature.xpReward} XP
-                    </span>
-                  )}
-                </div>
-
-                <p className={styles.cardDesc}>
-                  {feature.description}
-                </p>
-
-                <div className={styles.cardBottom}>
-                  {feature.comingSoon ? (
-                    <span className={styles.comingSoon}>
-                      <Lock size={11} />
-                      Coming soon
-                    </span>
-                  ) : (
-                    <span className={styles.actionText}>
+                  <div
+                    className={
+                      styles.cardBottom
+                    }
+                  >
+                    <span
+                      className={
+                        styles.actionText
+                      }
+                    >
                       {action}
-                      <ChevronRight size={13} />
-                    </span>
-                  )}
-                </div>
-              </div>
 
-              {/* Arrow / Lock */}
-              <div className={styles.cardAction}>
-                {feature.comingSoon ? (
-                  <Lock size={14} />
-                ) : (
-                  <ChevronRight size={17} />
-                )}
-              </div>
-            </motion.button>
-          );
-        })}
+                      <ChevronRight
+                        size={13}
+                      />
+                    </span>
+                  </div>
+                </div>
+
+                {/* ==================================
+                    RIGHT ARROW
+                ================================== */}
+
+                <div
+                  className={
+                    styles.cardAction
+                  }
+                >
+                  <ChevronRight
+                    size={17}
+                  />
+                </div>
+              </motion.button>
+            );
+          }
+        )}
       </div>
 
-      {/* Bottom Motivation */}
+      {/* ========================================
+          BOTTOM MOTIVATION
+      ======================================== */}
+
       <motion.div
         className={styles.footer}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
+        initial={{
+          opacity: 0,
+          y: 10,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
+        transition={{
+          delay: 0.5,
+        }}
       >
-        <div className={styles.footerIcon}>
+        <div
+          className={
+            styles.footerIcon
+          }
+        >
           🔥
         </div>
 
         <div>
-          <strong>Keep your momentum!</strong>
+          <strong>
+            Keep your momentum!
+          </strong>
+
           <span>
-            Every activity gets you closer to your next reward.
+            Every activity gets you
+            closer to your next reward.
           </span>
         </div>
       </motion.div>

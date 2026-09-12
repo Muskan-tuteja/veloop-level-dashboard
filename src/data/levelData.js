@@ -415,43 +415,43 @@ export const earningFeatures = [
   {
     id: "watch-earn",
     title: "Watch & Earn",
-    description: "Watch ads and earn",
+    description: "Watch ads and earn XP",
     xpReward: 50,
     icon: "play",
-    comingSoon: false,
+    
   },
 
   {
     id: "daily-missions",
     title: "Daily Missions",
-    description: "Complete daily tasks",
+    description: "Complete daily tasks and earn XP",
     xpReward: 30,
     icon: "clipboard",
-    comingSoon: false,
+   
   },
 
   {
     id: "refer-earn",
     title: "Refer & Earn",
-    description: "Invite friends & earn",
+    description: "Invite friends and earn rewards",
     xpReward: 100,
     icon: "users",
-    comingSoon: false,
+    
   },
 
   {
     id: "streak-bonus",
     title: "Streak Bonus",
-    description: "Maintain your streak",
+    description: "Maintain your daily streak",
     xpReward: 25,
     icon: "flame",
-    comingSoon: false,
+   
   },
 
   {
     id: "xp-catcher",
     title: "XP Catcher",
-    description: "Catch orbs & coins",
+    description: "Catch XP orbs and coins",
     xpReward: 10,
     icon: "magnet",
     comingSoon: false,
