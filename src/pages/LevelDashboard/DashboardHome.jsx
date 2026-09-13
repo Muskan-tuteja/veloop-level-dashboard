@@ -618,11 +618,11 @@ function DashboardHome({
 
               <div>
                 <h2 id="earn-heading">
-                  Earn More
+                  Earn & Level Up
                 </h2>
 
                 <p>
-                  Complete activities & earn rewards
+                  Complete activities, earn XP
                 </p>
               </div>
 
@@ -667,7 +667,7 @@ function DashboardHome({
                     aria-label={
                       feature.comingSoon
                         ? `${feature.title}, coming soon`
-                        : `Open ${feature.title}`
+                        : `Open ${feature.title}, earn ${feature.rewardLabel || ""}`
                     }
                     initial={{
                       opacity: 0,
@@ -691,12 +691,19 @@ function DashboardHome({
                     </div>
 
 
-                    <span>
+                    <span className={styles.label}>
                       {feature.title}
                     </span>
 
 
-                    {!feature.comingSoon && (
+                    {!feature.comingSoon && feature.rewardLabel && (
+                      <span className={styles.earnReward}>
+                        {feature.rewardLabel}
+                      </span>
+                    )}
+
+
+                    {!feature.comingSoon && !feature.rewardLabel && (
                       <ChevronRight
                         size={14}
                         className={styles.cardArrow}

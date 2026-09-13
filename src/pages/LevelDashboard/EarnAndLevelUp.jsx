@@ -44,6 +44,10 @@ function EarnAndLevelUp({ onBack, onPlayGame }) {
   // ============================================
 
   const handleCardClick = (feature) => {
+    if (feature.comingSoon) {
+      return;
+    }
+
     // XP Catcher is the actual game
     if (feature.id === "xp-catcher") {
       if (typeof onPlayGame === "function") {
@@ -63,7 +67,9 @@ function EarnAndLevelUp({ onBack, onPlayGame }) {
 
   const totalActivities = earningFeatures.length;
 
-  const availableActivities = earningFeatures.length;
+  const availableActivities = earningFeatures.filter(
+    (feature) => !feature.comingSoon
+  ).length;
 
   return (
     <div className={styles.page}>
@@ -229,13 +235,21 @@ function EarnAndLevelUp({ onBack, onPlayGame }) {
                     index * 0.06,
                   duration: 0.3,
                 }}
-                className={
-                  styles.card
-                }
+                className={`${styles.card} ${
+                  feature.comingSoon
+                    ? styles.disabledCard
+                    : ""
+                }`}
                 onClick={() =>
                   handleCardClick(
                     feature
                   )
+                }
+                disabled={feature.comingSoon}
+                aria-label={
+                  feature.comingSoon
+                    ? `${feature.title}, coming soon`
+                    : `${feature.title}, earn ${feature.xpReward} XP`
                 }
               >
                 {/* ==================================
@@ -277,17 +291,19 @@ function EarnAndLevelUp({ onBack, onPlayGame }) {
                       {feature.title}
                     </p>
 
-                    <span
-                      className={
-                        styles.xpBadge
-                      }
-                    >
-                      +
-                      {
-                        feature.xpReward
-                      }{" "}
-                      XP
-                    </span>
+                    {!feature.comingSoon && (
+                      <span
+                        className={
+                          styles.xpBadge
+                        }
+                      >
+                        +
+                        {
+                          feature.xpReward
+                        }{" "}
+                        XP
+                      </span>
+                    )}
                   </div>
 
                   <p
@@ -305,17 +321,27 @@ function EarnAndLevelUp({ onBack, onPlayGame }) {
                       styles.cardBottom
                     }
                   >
-                    <span
-                      className={
-                        styles.actionText
-                      }
-                    >
-                      {action}
+                    {feature.comingSoon ? (
+                      <span
+                        className={
+                          styles.comingSoon
+                        }
+                      >
+                        Coming Soon
+                      </span>
+                    ) : (
+                      <span
+                        className={
+                          styles.actionText
+                        }
+                      >
+                        {action}
 
-                      <ChevronRight
-                        size={13}
-                      />
-                    </span>
+                        <ChevronRight
+                          size={13}
+                        />
+                      </span>
+                    )}
                   </div>
                 </div>
 
@@ -323,15 +349,17 @@ function EarnAndLevelUp({ onBack, onPlayGame }) {
                     RIGHT ARROW
                 ================================== */}
 
-                <div
-                  className={
-                    styles.cardAction
-                  }
-                >
-                  <ChevronRight
-                    size={17}
-                  />
-                </div>
+                {!feature.comingSoon && (
+                  <div
+                    className={
+                      styles.cardAction
+                    }
+                  >
+                    <ChevronRight
+                      size={17}
+                    />
+                  </div>
+                )}
               </motion.button>
             );
           }

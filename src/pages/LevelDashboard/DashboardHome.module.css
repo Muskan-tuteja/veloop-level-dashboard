@@ -692,6 +692,27 @@ button {
   color: var(--yellow);
 }
 
+.xpRemaining {
+  margin-top: 9px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+.xpRemaining svg {
+  color: var(--yellow);
+
+  flex-shrink: 0;
+}
+
 
 /* =====================================================
    REWARD SECTION
@@ -1068,7 +1089,21 @@ button {
   border-radius: 12px;
 }
 
-.earnCard > span:not(.soonBadge) {
+.earnCard > span:not(.soonBadge):not(.earnReward) {
+  flex: 1;
+
+  min-width: 0;
+
+  color: #f7f8ff;
+
+  font-size: 10.5px;
+
+  font-weight: 800;
+
+  line-height: 1.35;
+}
+
+.label {
   flex: 1;
 
   min-width: 0;
@@ -1116,6 +1151,28 @@ button {
   border-radius: 20px;
 
   background: rgba(255, 255, 255, 0.055);
+}
+
+.earnReward {
+  flex-shrink: 0;
+
+  padding: 4px 8px;
+
+  color: var(--yellow);
+
+  font-size: 8.5px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.3px;
+
+  border: 1px solid rgba(250, 204, 21, 0.2);
+
+  border-radius: 20px;
+
+  background: rgba(250, 204, 21, 0.1);
+
+  white-space: nowrap;
 }
 
 
@@ -1611,7 +1668,8 @@ button {
     height: 43px;
   }
 
-  .earnCard > span:not(.soonBadge) {
+  .earnCard > span:not(.soonBadge):not(.earnReward),
+  .label {
     font-size: 11px;
   }
 
@@ -1700,7 +1758,8 @@ button {
     padding: 16px 10px;
   }
 
-  .earnCard > span:not(.soonBadge) {
+  .earnCard > span:not(.soonBadge):not(.earnReward),
+  .label {
     font-size: 10.5px;
   }
 }
@@ -1862,11 +1921,13 @@ button {
     border-radius: 10px;
   }
 
-  .earnCard > span:not(.soonBadge) {
+  .earnCard > span:not(.soonBadge):not(.earnReward),
+  .label {
     font-size: 9px;
   }
 
-  .soonBadge {
+  .soonBadge,
+  .earnReward {
     padding: 3px 5px;
 
     font-size: 6px;
@@ -2008,7 +2069,8 @@ button {
     height: 30px;
   }
 
-  .earnCard > span:not(.soonBadge) {
+  .earnCard > span:not(.soonBadge):not(.earnReward),
+  .label {
     font-size: 8.5px;
   }
 
